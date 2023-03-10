@@ -8,5 +8,5 @@ Mitsukuni le viellard / Pièces de départ : 6 / Capacité : Chaque carte Source
 Sasayakko la geisha / Pièces de départ : 5 / Capacité : Dans les villages, si la Geisha achète au moins 2 Souvenirs, le moins cher des 2 lui est offert.
 Umegae la saltimbanque / Pièces de départ : 5 / Capacité : gagne 1 point et 1 pièce lors de chaque rencontre. Précision : ce gain a lieu avant d’appliquer les effets de la carte Rencontre piochée.
 Chuubei le messager / Pièces de départ : 4 / Capacité : pioche 1 carte Rencontre lorsqu’il arrive dans chacun des 3 Relais intermédiaires (avant le Repas).
-Satsuki l'orpheline / Pièces de départ : 2 / Capacité : Lors de son arrivée au Relais, Satsuki reçoit aléatoirement et gratuitement 1 carte Repas. Précision : elle peut éventuellement renoncer à cette carte gratuite pour acheter un Repas selon la règle usuelle
+Satsuki l'orpheline / Pièces de départ : 2 / Capacité : Lors de son arrivée au Relais, Satsuki reçoit aléatoirement et gratuitement 1 carte Repas. Précision : elle peut éventuellement renoncer à cette carte gratuite pour acheter un Repas selon la règle usuelle
 Hiroshige l'artiste / Pièces de départ : 3 / Capacité : prend 1 carte Panorama de son choix lorsqu’il arrive dans chacun des 3 Relais intermédiaires (avant le Repas)
