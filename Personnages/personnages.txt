@@ -1,3 +1,5 @@
+Personnages:
+
 Kinko le ronin / Pièces de départ : 7 / Capacité : Prix de chaque repas baissé de 1 unité
 Hirotada le prêtre / Pièces de départ : 8 / Capacité : A chaque arrêt à un temple, donne 1 pièce provenant de la banque
 Yoshiyasu le fonctionnaire / Pièces de départ : 9 / Capacité : pioche 2 cartes Rencontre, conserve celle de son choix et replace la seconde au-dessous de la pioche (sans la montrer aux autres joueurs)
