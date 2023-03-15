@@ -12,7 +12,7 @@ class Game:
 
 pygame.init()
 pygame.display.set_caption("TOKAIDO")
-pygame.display.set_icon(pygame.image.load("icon_game1.png"))
+pygame.display.set_icon(pygame.image.load("icon_game.png"))
 screen = pygame.display.set_mode((screen_width,screen_height))
 clock = pygame.time.Clock()
 game = Game()
