@@ -11,7 +11,8 @@ class Game:
         self.overworld.run()
 
 pygame.init()
-pygame.display.set_caption("Tokaido", "../icon_game.png")
+pygame.display.set_caption("TOKAIDO")
+pygame.display.set_icon(pygame.image.load("icon_game2.png"))
 screen = pygame.display.set_mode((screen_width,screen_height))
 clock = pygame.time.Clock()
 game = Game()
