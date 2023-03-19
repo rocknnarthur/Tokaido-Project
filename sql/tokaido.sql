@@ -41,13 +41,5 @@ ENGINE=INNODB;
 INSERT INTO Joueur
 VALUES	(1, 'CHEVREL', 'Arthur', 'Art333', '2023-03-15', 'rocknnarthur', 'raclette123!');
 
-
 INSERT INTO Statistiques
-VALUES	(1, 0, 0);
-
--- 
--- Requêtes :
---
-
-SELECT *
 VALUES	(1, 0, 0);
