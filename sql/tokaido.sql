@@ -50,4 +50,4 @@ VALUES	(1, 0, 0);
 --
 
 SELECT *
-FROM Joueur;
+VALUES	(1, 0, 0);
