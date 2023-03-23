@@ -43,3 +43,6 @@ VALUES	(1, 'CHEVREL', 'Arthur', 'Art333', '2023-03-15', 'rocknnarthur', 'raclett
 
 INSERT INTO Statistiques
 VALUES	(1, 0, 0);
+
+SELECT *
+FROM Statistiques;
