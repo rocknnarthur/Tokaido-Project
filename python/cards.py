@@ -1,4 +1,4 @@
-class Souvenir:
+class SouvenirCard:
     def __init__(self, nom, famille, prix):
         self.name = nom
         self.category = famille
@@ -18,3 +18,9 @@ class RencontreCard:
     def __init__(self, nom, effet):
         self.name = nom
         self.effect = effet
+
+class MealCard:
+    def __init__(self, nom, points, prix):
+        self.name = nom
+        self.pts = points
+        self.price = prix
