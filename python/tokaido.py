@@ -49,7 +49,7 @@ for player in range(1, player_n+1):
                 loop = False
 
 for player in range(1, player_n+1):
-    pass
+    pass        ## instancier les classes joueurs avec leur couleur avant de commencer la partie
 
 
 
