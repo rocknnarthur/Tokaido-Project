@@ -1,3 +1,6 @@
+
+from player import Player
+
 # Starting game menu
 while True:
     print("""==========TOKAIDO==========
@@ -48,7 +51,11 @@ for player in range(1, player_n+1):
                 lplayer_color.append(f'{color}')
                 loop = False
 
-for player in range(1, player_n+1):
+lplayer = []
+for p in range(1, player_n+1):
+    ask_pseudo = input(f"Pseudo du joueur {lplayer_color[p-1]}: ")
+    pl = Player(ask_pseudo, lplayer_color[p-1], 0, 7, 0)
+    lplayer.append(pl)
     pass        ## instancier les classes joueurs avec leur couleur avant de commencer la partie
 
 
