@@ -5,3 +5,6 @@ class Player:
         self.locate = station
         self.purse = argent
         self.pts = points
+
+    def afficher(self):
+        print(f"{self.pseudo}, {self.color}, station {self.locate}, {self.purse} pieces, {self.pts} points")

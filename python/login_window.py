@@ -46,7 +46,7 @@ while True:
                 active2 = not active2
             else:
                 active2 = False
-            # Change the current color of the input box.
+            # Change the current color of the input box 2.
             color2 = color_active2 if active2 else color_inactive2
         if event.type == pygame.KEYDOWN:
             if active:

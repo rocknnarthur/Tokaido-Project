@@ -1,5 +1,7 @@
 
+import random
 from player import Player
+import csv
 
 # Starting game menu
 while True:
@@ -52,14 +54,13 @@ for player in range(1, player_n+1):
                 loop = False
 
 lplayer = []
-for p in range(1, player_n+1):
+for p in range(1, player_n+1):                                      ## instancier les classes joueurs avec leur couleur avant de commencer la partie
     ask_pseudo = input(f"Pseudo du joueur {lplayer_color[p-1]}: ")
     pl = Player(ask_pseudo, lplayer_color[p-1], 0, 7, 0)
     lplayer.append(pl)
-    pass        ## instancier les classes joueurs avec leur couleur avant de commencer la partie
 
-
-
+for p in lplayer:
+    p.afficher()
 
 
 
