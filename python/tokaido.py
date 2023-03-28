@@ -62,6 +62,43 @@ for p in range(1, player_n+1):                                      ## instancie
 for p in lplayer:
     p.afficher()
 
+random.shuffle(lplayer)
+
+
+relais = [1,15,28,42,55]
+a = 1
+
+
+Tour = True
+while Tour:
+
+    current_p = lplayer[0]
+    print(f'Le joueur {current_p.color} joue')
+
+    move = -1
+    while move <= current_p.locate or move > relais[a]:
+        print('Pas de retour en arrière ni de dépassement de relais !')
+        move = int(input("Quelle station? : "))
+
+    with open('board.csv') as board:                      #  permet de lire le csv contenant les cases du plateau
+        reader = csv.reader(board, delimiter = ';')
+        line_count = move
+        for row in reader:
+            if str(line_count) == row[0]:
+                case = row[1]
+
+    current_p.locate = move
+    print(f"Le joueur {current_p.color} est sur une case {case} situé à {move}.")
+
+    for p in lplayer:
+        small = 100
+        if p.locate < small:
+            small = p.locate
+            current_p = p
+
+    
+
+    
 
 
 print("stopping script")
