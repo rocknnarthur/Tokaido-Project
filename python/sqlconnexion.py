@@ -1,6 +1,7 @@
 import mysql.connector
 from datetime import date, datetime
 
+# Connexion
 cnx = mysql.connector.connect(
   host="127.0.0.1",
   user="root",

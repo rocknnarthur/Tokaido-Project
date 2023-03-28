@@ -1,6 +1,6 @@
-
 import random
 from player import Player
+from station_effect import checkstation
 import csv
 
 # Starting game menu
@@ -53,34 +53,41 @@ for player in range(1, player_n+1):
                 lplayer_color.append(f'{color}')
                 loop = False
 
+# Player class instance
 lplayer = []
 for p in range(1, player_n+1):                                      ## instancier les classes joueurs avec leur couleur avant de commencer la partie
     ask_pseudo = input(f"Pseudo du joueur {lplayer_color[p-1]}: ")
-    pl = Player(ask_pseudo, lplayer_color[p-1], 0, 7, 0)
+    pl = Player(ask_pseudo, lplayer_color[p-1], 1, 7)
     lplayer.append(pl)
 
 for p in lplayer:
     p.afficher()
 
+# Player shuffle for starting
 random.shuffle(lplayer)
 
-
+# Some setups 
 relais = [1,15,28,42,55]
 a = 1
+mealdraw = []
+riz_complete = 0
+mont_complete = 0
+mer_complete = 0
 
+# Game round with fix lplayer
+current_p = lplayer[0]
 
 Tour = True
 while Tour:
 
-    current_p = lplayer[0]
     print(f'Le joueur {current_p.color} joue')
 
-    move = -1
+    move = int(input("Quelle station? : "))
     while move <= current_p.locate or move > relais[a]:
         print('Pas de retour en arrière ni de dépassement de relais !')
         move = int(input("Quelle station? : "))
 
-    with open('board.csv') as board:                      #  permet de lire le csv contenant les cases du plateau
+    with open('python/board.csv') as board:                      #  permet de lire le csv contenant les cases du plateau
         reader = csv.reader(board, delimiter = ';')
         line_count = move
         for row in reader:
@@ -90,15 +97,27 @@ while Tour:
     current_p.locate = move
     print(f"Le joueur {current_p.color} est sur une case {case} situé à {move}.")
 
+    # Checking station for applying effect
+    checkstation(current_p, case)
+
+    # Checking who's playing next (= farthest player)
+    small_locate = 100
     for p in lplayer:
-        small = 100
-        if p.locate < small:
-            small = p.locate
+        if p.locate < small_locate:
+            small_locate = p.locate
             current_p = p
 
+    # Checking if all players are arrived at next relais
+    nbrelais = 0
+    for p in lplayer:
+        if p.locate == relais[a]:
+            nbrelais += 1
     
-
-    
+    if nbrelais == player_n:
+        a += 1
+        print(f"Vous passez maintenant à la {a+1}e partie du plateau.")
+        mealdraw = []
+        nbrelais = 0
 
 
 print("stopping script")
