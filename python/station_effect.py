@@ -1,5 +1,8 @@
 import random
 
+def panoramacheck(player, case):
+    pass
+
 def checkstation(player, case):
     
     # Relais
@@ -12,7 +15,18 @@ def checkstation(player, case):
     
     # Temple
     if case == "temple":
-        pass #put 1, 2 or 3 coins in temple slot
+        if player.purse > 0:
+            depot = 0
+            while not 0 < depot < 4 and player.purse >= depot:
+                print("Vous devez déposer un nombre de pièces adéquat à votre bourse.")
+                depot = int(input("Combien de pièces à déposer? [1, 2 ou 3]: "))
+            
+            player.purse -= depot
+            player.amen += depot
+            print(f"Vous avez déposé {depot} pièces au temple.")
+
+        else:
+            pass #impossible d'aller au temple
 
     # Rencontre
     if case == "rencontre":
@@ -22,19 +36,48 @@ def checkstation(player, case):
         meetcard = l_meet[0]
 
         if meetcard == "miko":
-            pass # put coin from bank in temple slot
+            player.amen += 1
+            print("Carte Miko, une pièce de la banque est placé sur votre slot temple !")
+
+        # CREER FONCTION PANORAMA PCK TROP CHIANT SINON
+
         elif meetcard == "annaibito_mer":
             pass # get pano card from mer
+
         elif meetcard == "annaibito_mont":
             pass # get pano card from mont
+
         elif meetcard == "annaibito_riz":
-            pass # get pano card from riz
+            if player.riz == 0:
+                player.riz += 1
+                player.pts += 1
+
+            elif player.riz == 1:
+                player.riz += 1
+                player.pts += 2
+
+            elif player.riz == 2:
+                player.riz += 1
+                player.pts += 3
+                if riz_complete == 0:
+                    riz_first = player
+                riz_complete += 1
+
+            # Si panorama riziere deja complet
+            elif player.riz == 3:
+                panoc = input("Panorama rizière complet. Choisir un autre panorama [mont/mer]: ")
+                if panoc == "mont":
+                    pass
+
         elif meetcard == "kuge":
-            pass # get 3 coins
+            player.purse += 3
+            print("Carte Kuge, vous gagnez 3 pièces !")
         elif meetcard == "shokunin":
             pass # get 1 random souvenir card
+            print("Carte Shokunin, vous gagnez 1 carte rencontre aléatoire !")
         elif meetcard == "samurai":
-            pass # get 3 points
+            player.pts += 3
+            print("Carte Samurai, vous gagnez 3 points !")
 
     # Ferme
     if case == "ferme":
@@ -44,16 +87,9 @@ def checkstation(player, case):
     # Source chaude
     if case == "source":
         #pioche carte
-        l_sc = [2,3]
-        random.shuffle(l_sc)
-        sccard = l_sc[0]
-
-        if sccard == 2:
-            player.pts += 2
-            print("Vous piochez une carte source chaude valant 2 points !")
-        elif sccard == 3:
-            player.pts += 3
-            print("Vous piochez une carte source chaude valant 3 points !")
+        sccard = random.randint(2,3)
+        player.pts += sccard
+        print(f"Vous piochez une carte source chaud valant {sccard} points. +{sccard}pts !")
 
     # Rizière
     if case == "riziere":
