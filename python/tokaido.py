@@ -70,6 +70,7 @@ random.shuffle(lplayer)
 relais = [1,15,28,42,55]
 a = 1
 mealdraw = []
+souvdraw = []
 riz_complete = 0
 mont_complete = 0
 mer_complete = 0
