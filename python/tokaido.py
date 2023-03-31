@@ -74,7 +74,7 @@ riz_complete = 0
 mont_complete = 0
 mer_complete = 0
 
-# Game round with fix lplayer
+# Game round with fixing first player
 current_p = lplayer[0]
 
 Tour = True
@@ -82,22 +82,11 @@ while Tour:
 
     print(f'Le joueur {current_p.color} joue')
 
-    move = int(input("Quelle station? : "))
-    with open('python/board.csv') as board:                      #  permet de lire le csv contenant les cases du plateau
-        reader = csv.reader(board, delimiter = ';')
-        line_count = move
-        for row in reader:
-            if str(line_count) == row[0]:
-                case = row[1]
-
-    # Check if move is legally possible
-    if not checkstation(current_p, case):
-        move = 0
-
+    move = 0
     while move <= current_p.locate or move > relais[a]:
-        print('Pas de retour en arrière ni de dépassement de relais !')
         move = int(input("Quelle station? : "))
 
+        # Read CSV for board stations
         with open('python/board.csv') as board:                      #  permet de lire le csv contenant les cases du plateau
             reader = csv.reader(board, delimiter = ';')
             line_count = move
@@ -105,20 +94,18 @@ while Tour:
                 if str(line_count) == row[0]:
                     case = row[1]
             
-            # Check if move is legally possible
+        # Check if move is legally possible and legal -> apply effect, else loop again
+        if move > current_p.locate and move <= relais[a]:
             if not checkstation(current_p, case):
                 move = 0
-
-
-    # Checking station for applying effect
-    checkstation(current_p, case)
-    
-
+        else:
+            print('Pas de retour en arrière ni de dépassement de relais !')
+        
     # Move player
     current_p.locate = move
     print(f"Le joueur {current_p.color} est sur une case {case} situé à {move}.")
 
-    # Checking who's playing next (= farthest player)
+    # Check who's playing next (= farthest player)
     small_locate = 100
     for p in lplayer:
         if p.locate < small_locate:
