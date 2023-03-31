@@ -1,7 +1,48 @@
 import random
 
 def panoramacheck(player, case):
-    pass
+    if case == "riziere":
+        if player.riz < 3:
+            player.riz += 1
+            player.pts += player.riz
+            if player.riz == 3:
+                if riz_complete == 0:
+                    riz_first = player
+                riz_complete += 1
+                print("Bravo, vous avez complété le panorama rizière !")
+        
+        else:
+            print("Vous avez déjà complété ce panorama.")
+            return False
+
+    elif case == "montagne":
+        if player.mont < 4:
+            player.mont += 1
+            player.pts += player.mont
+            if player.mont == 4:
+                if mont_complete == 0:
+                    mont_first = player
+                mont_complete += 1
+                print("Bravo, vous avez complété le panorama montagne !")
+
+        else:
+            print("Vous avez déjà complété ce panorama.")
+            return False
+
+    elif case == "mer":
+        if player.mer < 5:
+            player.mer += 1
+            player.pts += player.mer
+            if player.mer == 5:
+                if mer_complete == 0:
+                    mer_first = player
+                mer_complete += 1
+                print("Bravo, vous avez complété le panorama mer !")
+
+        else:
+            print("Vous avez déjà complété ce panorama.")
+            return False
+
 
 def checkstation(player, case):
     
@@ -26,7 +67,8 @@ def checkstation(player, case):
             print(f"Vous avez déposé {depot} pièces au temple.")
 
         else:
-            pass #impossible d'aller au temple
+            print("Vous ne pouvez pas y aller sans argent.")
+            return False
 
     # Rencontre
     if case == "rencontre":
@@ -42,32 +84,43 @@ def checkstation(player, case):
         # CREER FONCTION PANORAMA PCK TROP CHIANT SINON
 
         elif meetcard == "annaibito_mer":
-            pass # get pano card from mer
+            if player.mer == 5:
+                lpano_choice = []
+                if player.riz < 3:
+                    lpano_choice.append("riziere")
+                if player.mont < 4:
+                    lpano_choice.append("montagne")
+
+                pano = 0
+                while not 0 < pano < 3:
+                    pano = int(input(f"Choisir un panorama parmi {lpano_choice} [1 ou 2]: "))
+                    panoramacheck(player, lpano_choice[pano-1])
 
         elif meetcard == "annaibito_mont":
-            pass # get pano card from mont
+            if player.mont == 4:
+                lpano_choice = []
+                if player.riz < 3:
+                    lpano_choice.append("riziere")
+                if player.mer < 5:
+                    lpano_choice.append("mer")
+
+                pano = 0
+                while not 0 < pano < 3:
+                    pano = int(input(f"Choisir un panorama parmi {lpano_choice} [1 ou 2]: "))
+                    panoramacheck(player, lpano_choice[pano-1])
 
         elif meetcard == "annaibito_riz":
-            if player.riz == 0:
-                player.riz += 1
-                player.pts += 1
+            if player.riz == 3:
+                lpano_choice = []
+                if player.mer < 5:
+                    lpano_choice.append("mer")
+                if player.mont < 4:
+                    lpano_choice.append("montagne")
 
-            elif player.riz == 1:
-                player.riz += 1
-                player.pts += 2
-
-            elif player.riz == 2:
-                player.riz += 1
-                player.pts += 3
-                if riz_complete == 0:
-                    riz_first = player
-                riz_complete += 1
-
-            # Si panorama riziere deja complet
-            elif player.riz == 3:
-                panoc = input("Panorama rizière complet. Choisir un autre panorama [mont/mer]: ")
-                if panoc == "mont":
-                    pass
+                pano = 0
+                while not 0 < pano < 3:
+                    pano = int(input(f"Choisir un panorama parmi {lpano_choice} [1 ou 2]: "))
+                    panoramacheck(player, lpano_choice[pano-1])
 
         elif meetcard == "kuge":
             player.purse += 3
@@ -92,64 +145,5 @@ def checkstation(player, case):
         print(f"Vous piochez une carte source chaud valant {sccard} points. +{sccard}pts !")
 
     # Rizière
-    if case == "riziere":
-        if player.riz == 0:
-            player.riz += 1
-            player.pts += 1
-
-        elif player.riz == 1:
-            player.riz += 1
-            player.pts += 2
-
-        elif player.riz == 2:
-            player.riz += 1
-            player.pts += 3
-            if riz_complete == 0:
-                riz_first = player
-            riz_complete += 1
-
-    # Montagne
-    if case == "montagne":
-        if player.mont == 0:
-            player.mont += 1
-            player.pts += 1
-
-        elif player.mont == 1:
-            player.mont += 1
-            player.pts += 2
-
-        elif player.mont == 2:
-            player.mont += 1
-            player.pts += 3
-
-        elif player.mont == 3:
-            player.mont += 1
-            player.pts += 4
-            if mont_complete == 0:
-                mont_first = player
-            mont_complete += 1
-
-    # Mer
-    if case == "mer":
-        if player.mer == 0:
-            player.mer += 1
-            player.pts += 1
-
-        elif player.mer == 1:
-            player.mer += 1
-            player.pts += 2
-
-        elif player.mer == 2:
-            player.mer += 1
-            player.pts += 3
-
-        elif player.mer == 3:
-            player.mer += 1
-            player.pts += 4
-
-        elif player.mer == 4:
-            player.mer += 1
-            player.pts += 5
-            if mer_complete == 0:
-                mer_first = player
-            mer_complete += 1
+    if case == "riziere" or "montagne" or "mer":
+        panoramacheck(player, case)
