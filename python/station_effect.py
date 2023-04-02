@@ -1,6 +1,8 @@
 import random
 import csv
 
+
+
 riz_complete = 0
 mont_complete = 0
 mer_complete = 0
@@ -64,8 +66,10 @@ def panoramacheck(player, case):
             print("Vous avez déjà complété ce panorama.")
             return False
 
-mealdraw = []
 
+
+mealdraw = []
+# Check the station for applying effect on player
 def checkstation(player, case, l_meet, l_souvenir, l_meal, player_n):
 
     global mealdraw
@@ -96,11 +100,14 @@ def checkstation(player, case, l_meet, l_souvenir, l_meal, player_n):
                     small_price = price
 
             if player.purse >= small_price:
-                meal_ask = 0
-                while not 0 < meal_ask < len(mealdraw)+1:
-                    meal_ask = int(input(f"Quel repas voulez-vous acheter ? [entrez position numérique du repas] : "))
-                    if not 0 < meal_ask < len(mealdraw)+1:
+                meal_ask = -1
+                while not -1 < meal_ask < len(mealdraw)+1:
+                    meal_ask = int(input(f"Quel repas voulez-vous acheter ? [entrez position numérique du repas ou '0' pour ne pas acheter] : "))
+                    if not -1 < meal_ask < len(mealdraw)+1:
                         print("Entrez une valeur correcte.")
+                    
+                    elif meal_ask == 0:
+                        break
 
                     else:
                         repas = mealdraw[meal_ask-1]
@@ -115,14 +122,19 @@ def checkstation(player, case, l_meet, l_souvenir, l_meal, player_n):
 
                         if player.purse < price:
                             print("Repas trop cher pour vous ! En choisir un autre")
-                            meal_ask = 0 
+                            meal_ask = -1
 
-                player.purse -= price
-                player.pts += 6
-                player.mealdeck.append(repas)
-                print(f"Vous achetez le repas {repas}, -{price} pièces.")
-                mealdraw.remove(repas)
-                print(mealdraw)
+                if meal_ask == 0:
+                    print("Vous décidez de ne pas manger.")
+                    print(mealdraw)
+                
+                else:
+                    player.purse -= price
+                    player.pts += 6
+                    player.mealdeck.append(repas)
+                    print(f"Vous achetez le repas {repas}, -{price} pièces.")
+                    mealdraw.remove(repas)
+                    print(mealdraw)
 
             else:
                 print("Vous n'avez pas les moyens d'acheter l'un des repas proposés.")
@@ -132,8 +144,6 @@ def checkstation(player, case, l_meet, l_souvenir, l_meal, player_n):
         else:
             print("Vous n'avez pas d'argent donc aucun achat de repas possible.")
             return True
-
-        pass # pioche n+1 cartes repas pour le 1er arrivé et achète ou non le repas, puis repose le paquet restant de côté pour les suivants
     
     # Echoppe
     if case == "echoppe":
@@ -194,6 +204,7 @@ def checkstation(player, case, l_meet, l_souvenir, l_meal, player_n):
             
             player.purse -= depot
             player.amen += depot
+            player.pts += depot
             print(f"Vous avez déposé {depot} pièces au temple.")
             return True
 
@@ -311,3 +322,77 @@ def checkstation(player, case, l_meet, l_souvenir, l_meal, player_n):
             return True
         else:
             return False
+
+
+
+# Count all souvenir points at the end of the game
+def souvenircheck(player):
+    l = []
+    l2 = []
+    i = 0
+    points = 0
+
+    if len(player.souvdeck) != 0:
+
+        for souv in player.souvdeck:
+            with open('python/souvenir.csv') as souvcsv:
+                reader = csv.reader(souvcsv, delimiter = ';')
+                for row in reader:
+                    if souv == row[1]:
+                        fam = int(row[0])
+                        l.append(fam)
+
+        if len(l) <= 4:
+            i = 1
+        if 4 < len(l) <= 8:
+            i = 2
+        if 8 < len(l) <= 12:
+            i = 3
+        if 12 < len(l) <= 16:
+            i = 4
+        if 16 < len(l) <= 20:
+            i = 5
+        if 20 < len(l) <= 24:
+            i = 6
+
+        for n in range(i):
+            for fam1 in l:
+                if not fam1 in l2:
+                    l2.append(fam1)
+
+            for fam2 in l2:
+                l.remove(fam2)
+            print(l2)
+        
+            points += ((len(l2)*2) - 1)
+            l2 = []
+            print(points)
+        
+        player.pts += points
+        print(f"Le joueur {player.color} gagne {points}pts avec ses cartes souvenirs !")
+
+    else:
+        print(f"Aucun souvenir dans la collection du joueur {player.color}.")
+
+
+lp = []
+# Temple bonus points function
+def templebonus(lplayer):
+
+    global lp
+
+    for p in lplayer:
+        lp.append(p)
+    
+    bigamen = None
+    l_amen = []
+    for np in range(len(lp)):
+        bigger_amen = -1
+        for p in lp:
+            if p.amen > bigger_amen:
+                bigger_amen = p.amen
+                bigamen = p
+        l_amen.append(bigamen)
+        lp.remove(bigamen)
+
+    return l_amen

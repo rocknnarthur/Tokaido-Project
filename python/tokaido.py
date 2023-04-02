@@ -25,13 +25,13 @@ while True:
         break
 
     elif gamemode == 2:
-        print("Pas développé.")
+        print("Trajet Retour. Pas développé.")
 
     elif gamemode == 3:
-        print("Pas développé.")
+        print("Gastronomie. Pas développé.")
 
     elif gamemode == 4:
-        print("Pas développé.")
+        print("Préparatifs. Pas développé.")
     
     else:
         print("Entrez une valeur correcte.")
@@ -86,6 +86,7 @@ random.shuffle(l_meet)
 
 # Fixing first player turn
 current_p = lplayer[0]
+
 
 # Voyage Initiatique gamemode
 while travel_init:
@@ -144,6 +145,25 @@ while travel_init:
         se.mealdraw = []
         print(se.mealdraw)
         nbrelais = 0
+
+# Add Souvenir points to each player
+for p in lplayer:
+    se.souvenircheck(p)
+
+# Add Temple bonus points
+l_amen = se.templebonus(lplayer)
+temple_b = 10
+amen_detector = 50
+for p in se.l_amen:
+    p.pts += temple_b
+    if p.amen != amen_detector:
+        if temple_b == 10 or 7:
+            temple_b -= 3
+        elif temple_b == 4:
+            temple_b -= 2
+    #FAUT TROUVER UN MOYEN DE DETECTER LES EGALITES D'OFFRANDE
+
+# Add Success points
 
 # Results and show the winner
 winner = None

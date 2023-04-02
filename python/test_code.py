@@ -33,3 +33,4 @@ if len(l) != 0:
 else:
     print("pas de souvenirs dans la collection.")
     
+# Test de l'attribution des points pour les souvenirs
