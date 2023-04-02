@@ -97,7 +97,7 @@ while travel_init:
         move = int(input("Quelle station? : "))
 
         # Read CSV for board stations
-        with open('python/board.csv') as board:                      #  permet de lire le csv contenant les cases du plateau
+        with open('python/board.csv') as board:
             reader = csv.reader(board, delimiter = ';')
             line_count = move
             for row in reader:
@@ -147,15 +147,24 @@ while travel_init:
 
 # Results and show the winner
 winner = None
-bigger_pts = -1
-for p in lplayer:
-    if p.pts > bigger_pts:
-        bigger_pts = p.pts
-        winner = p
+lp_result = []
+for np in range(len(lplayer)):
+    bigger_pts = -1
+    for p in lplayer:
+        if p.pts > bigger_pts:
+            bigger_pts = p.pts
+            winner = p
+    lp_result.append(winner)
+    lplayer.remove(winner)
+    
 
 print(f"""
 Félicitations !
-Le joueur {winner.color} {winner.pseudo} remporte cette partie avec {winner.pts} !
+Le joueur {lp_result[0].color} {lp_result[0].pseudo} remporte cette partie avec {lp_result[0].pts}pts !
 """)
+
+print("Classement des perdans:")
+for other in range(1, len(lp_result)):
+    print(f"En {other+1}e, le joueur {lp_result[other].color} {lp_result[other].pseudo} avec {lp_result[other].pts}pts")
 
 print("\nstopping script")

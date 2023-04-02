@@ -24,6 +24,7 @@ def panoramacheck(player, case):
                     print(riz_first.pseudo)
                 riz_complete += 1
                 print(f"Bravo, le joueur {player.color} a complété le panorama rizière !")
+            return True
         
         else:
             print("Vous avez déjà complété ce panorama.")
@@ -40,6 +41,7 @@ def panoramacheck(player, case):
                     print(mont_first.pseudo)
                 mont_complete += 1
                 print(f"Bravo, le joueur {player.color} a complété le panorama montagne !")
+            return True
 
         else:
             print("Vous avez déjà complété ce panorama.")
@@ -56,6 +58,7 @@ def panoramacheck(player, case):
                     print(mer_first.pseudo)
                 mer_complete += 1
                 print(f"Bravo, le joueur {player.color} a complété le panorama mer !")
+            return True
 
         else:
             print("Vous avez déjà complété ce panorama.")
@@ -81,8 +84,9 @@ def checkstation(player, case, l_meet, l_souvenir, l_meal, player_n):
             print(mealdraw)
             
             small_price = 10
+            price = 0
             for m in mealdraw:
-                with open('python/repas.csv') as mealcsv:                      #  permet de lire le csv contenant les cases du plateau
+                with open('python/repas.csv') as mealcsv:
                     reader = csv.reader(mealcsv, delimiter = ';')
                     for row in reader:
                         if m == row[0]:
@@ -100,17 +104,22 @@ def checkstation(player, case, l_meet, l_souvenir, l_meal, player_n):
 
                     else:
                         repas = mealdraw[meal_ask-1]
-                        with open('python/repas.csv') as mealcsv:                      #  permet de lire le csv contenant les cases du plateau
+                        print(repas)
+                        with open('python/repas.csv') as mealcsv:
                             reader = csv.reader(mealcsv, delimiter = ';')
                             for row in reader:
+                                print(row)
                                 if repas == row[0]:
                                     price = int(row[1])
+                                    print(price)
 
                         if player.purse < price:
                             print("Repas trop cher pour vous ! En choisir un autre")
                             meal_ask = 0 
 
                 player.purse -= price
+                player.pts += 6
+                player.mealdeck.append(repas)
                 print(f"Vous achetez le repas {repas}, -{price} pièces.")
                 mealdraw.remove(repas)
                 print(mealdraw)
@@ -140,7 +149,7 @@ def checkstation(player, case, l_meet, l_souvenir, l_meal, player_n):
             print(souvdraw)
             
             for s in souvdraw:
-                with open('python/souvenir.csv') as souvcsv:                      #  permet de lire le csv contenant les cases du plateau
+                with open('python/souvenir.csv') as souvcsv:
                     reader = csv.reader(souvcsv, delimiter = ';')
                     for row in reader:
                         if s == row[1]:
@@ -156,6 +165,7 @@ def checkstation(player, case, l_meet, l_souvenir, l_meal, player_n):
 
                         elif souv_ask == 1:
                             player.purse -= price
+                            player.souvdeck.append(s)
                             print(f"Vous achetez le souvenir {s}, -{price} pièces.")
                             break
 
@@ -199,11 +209,14 @@ def checkstation(player, case, l_meet, l_souvenir, l_meal, player_n):
 
         if meetcard == "miko":
             player.amen += 1
+            player.meetdeck.append(meetcard)
             print("Carte Miko, une pièce de la banque est placé sur votre slot temple !")
 
         elif meetcard == "annaibito_mer":
             print("Carte Annaibito mer !")
+            player.meetdeck.append(meetcard)
             if player.mer == 5:
+                print("Vous avez déjà complété le panorama mer.")
                 lpano_choice = []
                 if player.riz < 3:
                     lpano_choice.append("riziere")
@@ -211,8 +224,8 @@ def checkstation(player, case, l_meet, l_souvenir, l_meal, player_n):
                     lpano_choice.append("montagne")
 
                 pano = 0
-                while not 0 < pano < 3:
-                    pano = int(input(f"Choisir un panorama parmi {lpano_choice} [1 ou 2]: "))
+                while not 0 < pano < len(lpano_choice)+1:
+                    pano = int(input(f"Choisir un panorama parmi {lpano_choice} [entrez position numérique du panorama]: "))
                     panoramacheck(player, lpano_choice[pano-1])
                 return True
             
@@ -222,7 +235,9 @@ def checkstation(player, case, l_meet, l_souvenir, l_meal, player_n):
 
         elif meetcard == "annaibito_mont":
             print("Carte Annaibito montagne !")
+            player.meetdeck.append(meetcard)
             if player.mont == 4:
+                print("Vous avez déjà complété le panorama montagne.")
                 lpano_choice = []
                 if player.riz < 3:
                     lpano_choice.append("riziere")
@@ -230,8 +245,8 @@ def checkstation(player, case, l_meet, l_souvenir, l_meal, player_n):
                     lpano_choice.append("mer")
 
                 pano = 0
-                while not 0 < pano < 3:
-                    pano = int(input(f"Choisir un panorama parmi {lpano_choice} [1 ou 2]: "))
+                while not 0 < pano < len(lpano_choice)+1:
+                    pano = int(input(f"Choisir un panorama parmi {lpano_choice} [entrez position numérique du panorama]: "))
                     panoramacheck(player, lpano_choice[pano-1])
                 return True
             
@@ -240,7 +255,9 @@ def checkstation(player, case, l_meet, l_souvenir, l_meal, player_n):
 
         elif meetcard == "annaibito_riz":
             print("Carte Annaibito rizière !")
+            player.meetdeck.append(meetcard)
             if player.riz == 3:
+                print("Vous avez déjà complété le panorama rizière.")
                 lpano_choice = []
                 if player.mer < 5:
                     lpano_choice.append("mer")
@@ -248,8 +265,8 @@ def checkstation(player, case, l_meet, l_souvenir, l_meal, player_n):
                     lpano_choice.append("montagne")
 
                 pano = 0
-                while not 0 < pano < 3:
-                    pano = int(input(f"Choisir un panorama parmi {lpano_choice} [1 ou 2]: "))
+                while not 0 < pano < len(lpano_choice)+1:
+                    pano = int(input(f"Choisir un panorama parmi {lpano_choice} [entrez position numérique du panorama]: "))
                     panoramacheck(player, lpano_choice[pano-1])
                 return True
             
@@ -258,16 +275,19 @@ def checkstation(player, case, l_meet, l_souvenir, l_meal, player_n):
 
         elif meetcard == "kuge":
             player.purse += 3
+            player.meetdeck.append(meetcard)
             print("Carte Kuge, vous gagnez 3 pièces !")
             return True
 
         elif meetcard == "shokunin":
             pass # get 1 random souvenir card
+            player.meetdeck.append(meetcard)
             print("Carte Shokunin, vous gagnez 1 carte rencontre aléatoire !")
             return True
 
         elif meetcard == "samurai":
             player.pts += 3
+            player.meetdeck.append(meetcard)
             print("Carte Samurai, vous gagnez 3 points !")
             return True
 
@@ -287,5 +307,7 @@ def checkstation(player, case, l_meet, l_souvenir, l_meal, player_n):
 
     # Rizière
     if case == "riziere" or "montagne" or "mer":
-        panoramacheck(player, case)
-        return True
+        if panoramacheck(player, case):
+            return True
+        else:
+            return False

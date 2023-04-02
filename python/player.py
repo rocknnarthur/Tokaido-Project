@@ -9,7 +9,9 @@ class Player:
         self.riz = 0
         self.mont = 0
         self.mer = 0
-        self.deck = []
+        self.meetdeck = []
+        self.souvdeck = []
+        self.mealdeck = []
 
     def afficher(self):
         print(f"{self.pseudo}, {self.color}, station {self.locate}, {self.purse} pieces, {self.pts} points")
