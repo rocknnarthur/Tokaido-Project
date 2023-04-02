@@ -1,11 +1,10 @@
 import random
-from player import Player
-from station_effect import checkstation
 import csv
+from player import Player
+import station_effect as se
 
 # Starting game menu
-while True:
-    print("""==========TOKAIDO==========
+print("""==========TOKAIDO==========
 
 Bienvenue à toi voyageur !
 
@@ -15,22 +14,27 @@ Choisis un mode de jeu: [1/2/3/4]
 3) Gastronomie X
 4) Préparatifs X
     """)
-    # Gamemode choice
+
+# Gamemode choice
+while True:    
     gamemode = int(input("Mode de jeu: "))
 
     if gamemode == 1:
-        pass
+        travel_init = True
+        print("Mode: Voyage Initiatique")
+        break
 
     elif gamemode == 2:
-        pass
+        print("Pas développé.")
 
     elif gamemode == 3:
-        pass
+        print("Pas développé.")
 
     elif gamemode == 4:
-        pass
+        print("Pas développé.")
     
-    break
+    else:
+        print("Entrez une valeur correcte.")
 
 # Player number
 player_n = 0
@@ -68,18 +72,23 @@ random.shuffle(lplayer)
 
 # Some setups 
 relais = [1,15,28,42,55]
-a = 1
-mealdraw = []
-souvdraw = []
-riz_complete = 0
-mont_complete = 0
-mer_complete = 0
+if gamemode == 2:
+    a = 3
+else:
+    a = 1
 
-# Game round with fixing first player
+l_meal = ["Misoshiru", "Misoshiru", "Misoshiru", "Nigirimeshi", "Nigirimeshi", "Nigirimeshi", "Dango", "Dango", "Dango", "Yakitori", "Yakitori", "Soba", "Soba", "Sushi", "Sushi", "Tofu", "Tofu", "Tempura", "Tempura", "Unagi", "Donburi", "Udon", "Fugu", "Tai Meshi", "Sashimi"]
+random.shuffle(l_meal)
+l_souvenir = ["Koma", "Gofu", "Washi", "Hashi", "Uchiwa", "Yunomi", "Ocha", "Sake", "Konpeito", "Kanaboko", "Daifuku", "Manju", "Netsuke", "Shamisen", "Jubako", "Sumie", "Shikki", "Ukiyoe", "Kanzashi", "Sandogasa", "Geta", "Haori", "Yukata", "Furoshiki"]
+random.shuffle(l_souvenir)
+l_meet = ["miko", "miko", "annaibito_mer", "annaibito_mer", "annaibito_mer", "annaibito_mont", "annaibito_mont", "annaibito_riz", "kuge", "kuge", "shokunin", "shokunin", "samurai", "samurai"]
+random.shuffle(l_meet)
+
+# Fixing first player turn
 current_p = lplayer[0]
 
-Tour = True
-while Tour:
+# Voyage Initiatique gamemode
+while travel_init:
 
     print(f'Le joueur {current_p.color} joue')
 
@@ -95,10 +104,15 @@ while Tour:
                 if str(line_count) == row[0]:
                     case = row[1]
             
-        # Check if move is legally possible and legal -> apply effect, else loop again
+        # Check if move is legally possible and legal = apply effect, else loop again
         if move > current_p.locate and move <= relais[a]:
-            if not checkstation(current_p, case):
-                move = 0
+            for p in lplayer:
+                if move == p.locate and move != relais[a]:
+                    print(f"vous ne pouvez pas aller sur cette case, elle est occupée par le joueur {p.color} !")
+                    move = 0
+            if move != 0:
+                if not se.checkstation(current_p, case, l_meet, l_souvenir, l_meal, player_n):
+                    move = 0
         else:
             print('Pas de retour en arrière ni de dépassement de relais !')
         
@@ -121,9 +135,27 @@ while Tour:
     
     if nbrelais == player_n:
         a += 1
-        print(f"Vous passez maintenant à la {a+1}e partie du plateau.")
-        mealdraw = []
+        # Check if the game is finished
+        if a == 5:
+            break
+        print(f"Vous passez maintenant à la {a}e partie du plateau.")
+        l_meal.extend(se.mealdraw)
+        print(l_meal)
+        se.mealdraw = []
+        print(se.mealdraw)
         nbrelais = 0
 
+# Results and show the winner
+winner = None
+bigger_pts = -1
+for p in lplayer:
+    if p.pts > bigger_pts:
+        bigger_pts = p.pts
+        winner = p
 
-print("stopping script")
+print(f"""
+Félicitations !
+Le joueur {winner.color} {winner.pseudo} remporte cette partie avec {winner.pts} !
+""")
+
+print("\nstopping script")

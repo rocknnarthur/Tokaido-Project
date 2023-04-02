@@ -9,6 +9,7 @@ class Player:
         self.riz = 0
         self.mont = 0
         self.mer = 0
+        self.deck = []
 
     def afficher(self):
         print(f"{self.pseudo}, {self.color}, station {self.locate}, {self.purse} pieces, {self.pts} points")
