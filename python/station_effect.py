@@ -375,11 +375,13 @@ def souvenircheck(player):
         print(f"Aucun souvenir dans la collection du joueur {player.color}.")
 
 
-lp = []
+l_amen_player = []
 # Temple bonus points function
 def templebonus(lplayer):
 
-    global lp
+    global l_amen_player
+
+    lp = []
 
     for p in lplayer:
         lp.append(p)
@@ -392,7 +394,8 @@ def templebonus(lplayer):
             if p.amen > bigger_amen:
                 bigger_amen = p.amen
                 bigamen = p
-        l_amen.append(bigamen)
+        l_amen.append(bigger_amen)
+        l_amen_player.append(bigamen)
         lp.remove(bigamen)
 
     return l_amen

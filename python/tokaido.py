@@ -146,24 +146,55 @@ while travel_init:
         print(se.mealdraw)
         nbrelais = 0
 
+# GAME IS OVER AND WE NEED ADD BONUS POINTS
+
 # Add Souvenir points to each player
 for p in lplayer:
     se.souvenircheck(p)
 
-# Add Temple bonus points
+# Temple bonus points
 l_amen = se.templebonus(lplayer)
-temple_b = 10
-amen_detector = 50
-for p in se.l_amen:
-    p.pts += temple_b
-    if p.amen != amen_detector:
-        if temple_b == 10 or 7:
-            temple_b -= 3
-        elif temple_b == 4:
-            temple_b -= 2
-    #FAUT TROUVER UN MOYEN DE DETECTER LES EGALITES D'OFFRANDE
 
-# Add Success points
+    # Permet de détecter les égalités d'offrande
+l_verif = [[], [], [], [], []]
+l_verif_player = [[], [], [], [], []]
+
+for e in l_amen:
+    a = 0
+    for nb in range(len(l_amen)):
+        if e in l_verif[nb]:
+            pass
+
+        else:
+            if a == 0:
+                l_verif[l_amen.index(e)].append(e)
+                l_verif_player[l_amen.index(e)].append(se.l_amen_player[l_amen.index(e)])
+                a = 1
+
+print(l_verif)
+print(l_verif_player)
+
+    # Ajout des points bonus pour le temple
+i = 0
+for lp in l_verif_player:
+    if len(lp) != 0 and not all(x in (0,0) for x in lp):
+        if i == 0:
+            for p in lp:
+                p.pts += 10
+        if i == 1:
+            for p in lp:
+                p.pts += 7
+        if i == 2:
+            for p in lp:
+                p.pts += 4
+        if i == 3:
+            for p in lp:
+                p.pts += 2
+        i += 1
+
+
+# Add Success points (7 SUCCESS)
+# PANORAMA FIRST x3, GOURMET, BAIGNEUR, BAVARD, COLLECTIONNEUR
 
 # Results and show the winner
 winner = None
