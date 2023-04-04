@@ -214,7 +214,7 @@ Félicitations !
 Le joueur {lp_result[0].color} {lp_result[0].pseudo} remporte cette partie avec {lp_result[0].pts}pts !
 """)
 
-print("Classement des perdans:")
+print("Classement des perdants:")
 for other in range(1, len(lp_result)):
     print(f"En {other+1}e, le joueur {lp_result[other].color} {lp_result[other].pseudo} avec {lp_result[other].pts}pts")
 
