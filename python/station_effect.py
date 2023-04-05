@@ -1,7 +1,6 @@
 import random
 import csv
-
-
+from player import Player
 
 riz_complete = 0
 mont_complete = 0
@@ -20,12 +19,15 @@ def panoramacheck(player, case):
             player.riz += 1
             player.pts += player.riz
             print(f"Vous obtenez +1 carte panorama rizière. Total = {player.riz}")
+            # Si panorama rizière complété
             if player.riz == 3:
+                print(f"Bravo, le joueur {player.color} a complété le panorama rizière !")
                 if riz_complete == 0:
                     riz_first = player
-                    print(riz_first.pseudo)
+                    riz_first.pts += 3
+                    print(f"Le joueur {riz_first.color} {riz_first.pseudo} obtient la carte accomplissement panorama rizière. +3pts bonus !")
                 riz_complete += 1
-                print(f"Bravo, le joueur {player.color} a complété le panorama rizière !")
+                
             return True
         
         else:
@@ -37,12 +39,15 @@ def panoramacheck(player, case):
             player.mont += 1
             player.pts += player.mont
             print(f"Vous obtenez +1 carte panorama montagne. Total = {player.mont}")
+            # Si panorama montagne complété
             if player.mont == 4:
+                print(f"Bravo, le joueur {player.color} a complété le panorama montagne !")
                 if mont_complete == 0:
                     mont_first = player
-                    print(mont_first.pseudo)
+                    mont_first.pts += 3
+                    print(f"Le joueur {mont_first.color} {mont_first.pseudo} obtient la carte accomplissement panorama montagne. +3pts bonus !")
                 mont_complete += 1
-                print(f"Bravo, le joueur {player.color} a complété le panorama montagne !")
+                
             return True
 
         else:
@@ -54,12 +59,15 @@ def panoramacheck(player, case):
             player.mer += 1
             player.pts += player.mer
             print(f"Vous obtenez +1 carte panorama mer. Total = {player.mer}")
+            # Si panorama mer complété
             if player.mer == 5:
+                print(f"Bravo, le joueur {player.color} a complété le panorama mer !")
                 if mer_complete == 0:
                     mer_first = player
-                    print(mer_first.pseudo)
+                    mer_first.pts += 3
+                    print(f"Le joueur {mer_first.color} {mer_first.pseudo} obtient la carte accomplissement panorama mer. +3pts bonus !")
                 mer_complete += 1
-                print(f"Bravo, le joueur {player.color} a complété le panorama mer !")
+                
             return True
 
         else:
@@ -70,7 +78,7 @@ def panoramacheck(player, case):
 
 mealdraw = []
 # Check the station for applying effect on player
-def checkstation(player, case, l_meet, l_souvenir, l_meal, player_n):
+def checkstation(player, case, l_meet, l_souvenir, l_meal, player_n, gamemode):
 
     global mealdraw
 
@@ -78,11 +86,19 @@ def checkstation(player, case, l_meet, l_souvenir, l_meal, player_n):
     if case == "relais":
 
         if player.purse > 0:
-            # Pioche n+1 cartes repas
+            # En fonction du mode de jeu, change ou non le nombre de cartes repas à piocher
+            if gamemode == 3:
+                n_meal = player_n
+            else:
+                n_meal = player_n+1
+
+            # Pioche n+1 cartes repas (Tous les autres modes) ou pioche n cartes repas (Mode Gastronomie)
             if len(mealdraw) == 0:
-                for meal in range(0, player_n+1):
+                for meal in range(0, n_meal):
                     mealdraw.append(l_meal[meal])
                 del(l_meal[0:3])
+
+            
             
             print(l_meal)
             print(mealdraw)
@@ -222,6 +238,7 @@ def checkstation(player, case, l_meet, l_souvenir, l_meal, player_n):
             player.amen += 1
             player.meetdeck.append(meetcard)
             print("Carte Miko, une pièce de la banque est placé sur votre slot temple !")
+            return True
 
         elif meetcard == "annaibito_mer":
             print("Carte Annaibito mer !")
@@ -242,7 +259,8 @@ def checkstation(player, case, l_meet, l_souvenir, l_meal, player_n):
             
             else:
                 panoramacheck(player, "mer")
-
+                return True
+            
 
         elif meetcard == "annaibito_mont":
             print("Carte Annaibito montagne !")
@@ -263,6 +281,7 @@ def checkstation(player, case, l_meet, l_souvenir, l_meal, player_n):
             
             else:
                 panoramacheck(player, "montagne")
+                return True
 
         elif meetcard == "annaibito_riz":
             print("Carte Annaibito rizière !")
@@ -283,6 +302,7 @@ def checkstation(player, case, l_meet, l_souvenir, l_meal, player_n):
             
             else:
                 panoramacheck(player, "riziere")
+                return True
 
         elif meetcard == "kuge":
             player.purse += 3
@@ -375,19 +395,18 @@ def souvenircheck(player):
         print(f"Aucun souvenir dans la collection du joueur {player.color}.")
 
 
-l_amen_player = []
+
 # Temple bonus points function
 def templebonus(lplayer):
 
-    global l_amen_player
-
     lp = []
-
     for p in lplayer:
         lp.append(p)
     
+    # Range dans l'ordre décroissant les scores d'offrandes et les joueurs associés
     bigamen = None
     l_amen = []
+    l_amen_player = []
     for np in range(len(lp)):
         bigger_amen = -1
         for p in lp:
@@ -399,4 +418,54 @@ def templebonus(lplayer):
         lp.remove(bigamen)
         # EN FAIT CE CODE EST BON
 
-    return l_amen
+    # Permet de détecter les égalités d'offrande
+    l_verif = [[], [], [], [], []]
+    l_verif_player = [[], [], [], [], []]
+
+    for e in l_amen:
+        b = 0
+        ind = 0
+        for nb in range(len(l_amen)):
+            if e in l_verif[nb]:
+                pass
+
+            else:
+                if b == 0:
+                    l_verif[l_amen.index(e)].append(e)
+                    l_verif_player[l_amen.index(e)].append(l_amen_player[ind])
+                    print(l_amen.index(e))
+                    b = 1
+
+            ind += 1
+
+    print(l_verif)
+    print(l_verif_player)
+
+    # Ajout des points bonus pour le temple
+    i = 0
+    for lilp in l_verif_player:
+        if len(lilp) != 0 and not all(x.amen in (0,0) for x in lilp):
+            if i == 0:
+                for p in lilp:
+                    p.pts += 10
+                    print(f"joueur {p.color} +10pts bonus temple")
+            if i == 1:
+                for p in lilp:
+                    p.pts += 7
+                    print(f"joueur {p.color} +7pts bonus temple")
+            if i == 2:
+                for p in lilp:
+                    p.pts += 4
+                    print(f"joueur {p.color} +4pts bonus temple")
+            if i == 3:
+                for p in lilp:
+                    p.pts += 2
+                    print(f"joueur {p.color} +2pts bonus temple")
+            i += 1
+        elif all(x.amen in (0,0) for x in lilp):
+            for p in lilp:
+                print(f"Pas de points pour le joueur {p.color} car pas d'offrande")
+
+
+
+# SUCCESS FUNCTION !
