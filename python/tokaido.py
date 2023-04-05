@@ -161,6 +161,7 @@ l_verif_player = [[], [], [], [], []]
 
 for e in l_amen:
     a = 0
+    ind = 0
     for nb in range(len(l_amen)):
         if e in l_verif[nb]:
             pass
@@ -168,8 +169,11 @@ for e in l_amen:
         else:
             if a == 0:
                 l_verif[l_amen.index(e)].append(e)
-                l_verif_player[l_amen.index(e)].append(se.l_amen_player[l_amen.index(e)])
+                l_verif_player[l_amen.index(e)].append(se.l_amen_player[ind])
+                print(l_amen.index(e))
                 a = 1
+
+        ind += 1
 
 print(l_verif)
 print(l_verif_player)
@@ -177,20 +181,27 @@ print(l_verif_player)
     # Ajout des points bonus pour le temple
 i = 0
 for lp in l_verif_player:
-    if len(lp) != 0 and not all(x in (0,0) for x in lp):
+    if len(lp) != 0 and not all(x.amen in (0,0) for x in lp):
         if i == 0:
             for p in lp:
                 p.pts += 10
+                print(f"joueur {p.color} +10pts bonus temple")
         if i == 1:
             for p in lp:
                 p.pts += 7
+                print(f"joueur {p.color} +7pts bonus temple")
         if i == 2:
             for p in lp:
                 p.pts += 4
+                print(f"joueur {p.color} +4pts bonus temple")
         if i == 3:
             for p in lp:
                 p.pts += 2
+                print(f"joueur {p.color} +2pts bonus temple")
         i += 1
+    elif all(x.amen in (0,0) for x in lp):
+        for p in lp:
+            print(f"Pas de points pour le joueur {p.color} car pas d'offrande")
 
 
 # Add Success points (7 SUCCESS)

@@ -397,5 +397,6 @@ def templebonus(lplayer):
         l_amen.append(bigger_amen)
         l_amen_player.append(bigamen)
         lp.remove(bigamen)
+        # EN FAIT CE CODE EST BON
 
     return l_amen
