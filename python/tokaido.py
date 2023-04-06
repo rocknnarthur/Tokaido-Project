@@ -13,7 +13,7 @@ Choisis un mode de jeu: [0/1/2/3/4]
 1) Mode Normal X
 2) Trajet Retour ✓
 3) Gastronomie ✓
-4) Préparatifs X
+4) Préparatifs ✓
     """)
 
 travel_init = False
@@ -46,7 +46,8 @@ while True:
 
     elif gamemode == 4:
         setup_mode = True
-        print("Préparatifs. Pas développé.")
+        print("Mode: Préparatifs")
+        break
     
     else:
         print("Entrez une valeur correcte.")
@@ -84,11 +85,11 @@ for p in range(1, player_n+1):
     pl = Player(ask_pseudo, lplayer_color[p-1], fstation, 7)
     lplayer.append(pl)
 
-for p in lplayer:
-    p.afficher()
-
 # Player shuffle for starting
 random.shuffle(lplayer)
+
+for p in lplayer:
+    p.afficher()
 
 # Some setups 
 if player_n >= 4:
@@ -111,11 +112,11 @@ random.shuffle(l_meet)
 # Fixing first player turn
 current_p = lplayer[0]
 
-
 # Voyage Initiatique gamemode
 while travel_init:
 
     print(f'Le joueur {current_p.color} joue')
+
 
     # Asking for a station
     move = 0
@@ -366,9 +367,118 @@ while gastro_mode:
         print(se.mealdraw)
         nbrelais = 0
 
-
 # Préparatifs gamemode
+# 2p, 1er = -1 pièce et 2e = +1 pièce
+# 3p, 1er = -1 pièce, 2e = 0 pièce, 3e = +1 pièces
+# 4p, 1er = -1 pièce, 2e = 0 pièce, 3e = +1 pièces, 4e = +2 pièces
+# 5p, 1er = -1 pièce, 2e = -1 pièce, 3e = +0 pièces, 4e = +1 pièces, 5e = +2 pièces
+if gamemode == 4:
+    if player_n == 5:
+        lplayer[0].purse -= 1
+        lplayer[1].purse -= 1
+        #lplayer[2].purse ne change pas
+        lplayer[3].purse += 1
+        lplayer[4].purse += 2
+    
+    elif player_n == 4:
+        lplayer[0].purse -= 1
+        #lplayer[1].purse ne change pas
+        lplayer[2].purse += 1
+        lplayer[3].purse += 2
 
+    elif player_n == 3:
+        lplayer[0].purse -= 1
+        #lplayer[1].purse ne change pas
+        lplayer[2].purse += 1
+
+    elif player_n == 2:
+        lplayer[0].purse -= 1
+        lplayer[1].purse += 1
+    for p in lplayer:
+        print(p.purse)
+
+while setup_mode:
+
+    print(f'Le joueur {current_p.color} joue')
+
+    # Asking for a station
+    move = 0
+    while move <= current_p.locate or move > relais[a]:
+        double = False
+        move = int(input("Quelle station? : "))
+
+        # Read CSV for board stations
+        with open('python/board.csv') as board:
+            reader = csv.reader(board, delimiter = ';')
+            line_count = move
+            for row in reader:
+                if str(line_count) == row[0]:
+                    case = row[1]
+            
+        # Check if move is legally possible and legal = apply effect, else loop again
+        if move > current_p.locate and move <= relais[a]:
+            for p in lplayer:
+                if move == p.locate and move != relais[a]:
+                    if player_n >= 4:
+                        count = 0
+                        for p2 in lplayer:
+                            if move-0.5 < p2.locate < move+0.5:
+                                count += 1
+                        if count < 2:
+                            for num in ldb_case:
+                                if num == move:
+                                    double = True
+                                    break
+                            if double:
+                                move = float(move)
+                                move -= 0.1
+                            else:
+                                print(f"vous ne pouvez pas aller sur cette case, elle est occupée par le joueur {p.color} !")
+                                move = 0
+                        else:
+                            print(f"vous ne pouvez pas aller sur cette case, elle est occupée par le joueur {p.color} !")
+                            move = 0
+                    else:
+                        print(f"vous ne pouvez pas aller sur cette case, elle est occupée par le joueur {p.color} !")
+                        move = 0
+            if move != 0:
+                if not se.checkstation(current_p, case, l_meet, l_souvenir, l_meal, player_n, gamemode):
+                    move = 0
+        else:
+            print('Pas de retour en arrière ni de dépassement de relais !')
+        
+    # Move player
+    current_p.locate = move
+    if double:
+        move += 0.1
+        move = int(move)
+        double = False
+    print(f"Le joueur {current_p.color} est sur une case {case} situé à {move}.")
+
+    # Check who's playing next (= farthest player)
+    small_locate = 100
+    for p in lplayer:
+        if p.locate < small_locate:
+            small_locate = p.locate
+            current_p = p
+
+    # Checking if all players are arrived at next relais
+    nbrelais = 0
+    for p in lplayer:
+        if p.locate == relais[a]:
+            nbrelais += 1
+    
+    if nbrelais == player_n:
+        a += 1
+        # Check if the game is finished
+        if a == 5:
+            break
+        print(f"Vous passez maintenant à la {a}e partie du plateau.")
+        l_meal.extend(se.mealdraw)
+        print(l_meal)
+        se.mealdraw = []
+        print(se.mealdraw)
+        nbrelais = 0
 
 
 # GAME IS OVER AND WE NEED ADD BONUS POINTS

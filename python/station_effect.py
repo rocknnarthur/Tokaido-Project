@@ -1,6 +1,5 @@
 import random
 import csv
-from player import Player
 
 riz_complete = 0
 mont_complete = 0
@@ -214,7 +213,7 @@ def checkstation(player, case, l_meet, l_souvenir, l_meal, player_n, gamemode):
     if case == "temple":
         if player.purse > 0:
             depot = 0
-            while not 0 < depot < 4 and player.purse >= depot:
+            while not 0 < depot < 4 or not player.purse >= depot:
                 print("Vous devez déposer un nombre de pièces adéquat avec votre bourse.")
                 depot = int(input("Combien de pièces à déposer? [1, 2 ou 3]: "))
             
@@ -311,7 +310,9 @@ def checkstation(player, case, l_meet, l_souvenir, l_meal, player_n, gamemode):
             return True
 
         elif meetcard == "shokunin":
-            pass # get 1 random souvenir card
+            alea = random.randint(0, len(l_souvenir))
+            player.souvdeck.append(l_souvenir[alea])
+            l_souvenir.remove(l_souvenir[alea])
             player.meetdeck.append(meetcard)
             print("Carte Shokunin, vous gagnez 1 carte rencontre aléatoire !")
             return True
