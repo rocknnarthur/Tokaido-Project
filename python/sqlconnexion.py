@@ -13,7 +13,7 @@ cursor = cnx.cursor()
 
 today = datetime.now().date()
 
-# Query
+# Query INSERT => SIGN UP PLAYER
 add_joueur = ("INSERT INTO Joueur "
                "(jou_id, jou_nom, jou_prenom, jou_pseudo, jou_creation, jou_login, jou_password) "
                "VALUES (%s, %s, %s, %s, %s, %s, %s)")
@@ -25,6 +25,5 @@ cursor.execute(add_joueur, data_joueur)
 
 # Make sure data is committed to the database
 cnx.commit()
-
 cursor.close()
 cnx.close()
