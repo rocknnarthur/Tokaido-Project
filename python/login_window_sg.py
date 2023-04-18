@@ -1,17 +1,17 @@
 import PySimpleGUI as sg
 import sqlconnectlogin
-from sqlconnectlogin import connexion, layoute
+from sqlconnectlogin import connexion
 
 layout = [
-        [sg.Text("Bienvenue voyageur !", key="head")],
+        [sg.Text("Bienvenue voyageur !", key="head", auto_size_text=True)],
         [sg.Text("Identifiant:")],
         [sg.Input(key="id")],
         [sg.Text("Mot de passe:")],
         [sg.Input(key="mdp")],
-        [sg.Text(key="error", text_color="red")],
+        [sg.Text(key="error", text_color="darkred")],
         [sg.Button("Log In"), sg.Button("Sign Up"), sg.Exit("Quit")]
         ]
-window = sg.Window("CONNEXION TOKAIDO", layout, icon = r'python/images/tokaido-connexion.ico')
+window = sg.Window("CONNEXION TOKAIDO", layout, icon = r'python/images/tokaido-connexion.ico', size=(1080,720))
 
 while True:
     event , values = window.read()
