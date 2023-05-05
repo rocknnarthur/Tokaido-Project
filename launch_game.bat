@@ -1,3 +1,2 @@
-cd python
-login_window_sg.py
+python\login_window_sg.py
 exit
