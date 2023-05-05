@@ -11,7 +11,7 @@ layout = [
         [sg.Text(key="error", text_color="darkred", font=('Pristina', (15)))],
         [sg.Button("Log In", size=(8,0), font=('Pristina', (15))), sg.Button("Sign Up", size=(8,0), font=('Pristina', (15))), sg.Exit("Quit", size=(8,0), font=('Pristina', (15)))]
         ]
-window = sg.Window("CONNEXION TOKAIDO", layout, icon = r'python/images/tokaido-connexion.ico', size=(720,360), default_element_size=(200, 200))
+window = sg.Window("CONNEXION TOKAIDO", layout, icon = 'python/images/tokaido-connexion.ico', size=(720,360), default_element_size=(200, 200))
 
 while True:
     event , values = window.read()
