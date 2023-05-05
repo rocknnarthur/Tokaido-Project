@@ -3,7 +3,7 @@ from settings import *
 
 pygame.init()
 pygame.display.set_caption("CONNEXION TOKAIDO")
-pygame.display.set_icon(pygame.image.load("icon_game2.png"))
+pygame.display.set_icon(pygame.image.load("python/images/icon_game2.png"))
 screen = pygame.display.set_mode((screen_width,screen_height))
 clock = pygame.time.Clock()
 
