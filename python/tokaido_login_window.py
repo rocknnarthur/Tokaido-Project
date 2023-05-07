@@ -1,4 +1,5 @@
 import PySimpleGUI as sg
+import os
 import sqlconnectlogin
 from sqlconnectlogin import connexion
 
@@ -29,6 +30,7 @@ while True:
             print(f"Bienvenue à vous {sqlconnectlogin.result[0][0]} !")
             window['error'].Update("")
             window.close()
+            os.system('cmd /k "menu.bat"')
         
         else:
             window['id'].Update("")
