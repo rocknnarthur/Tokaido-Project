@@ -1,2 +1,2 @@
-python\login_window_sg.py
+python\tokaido_login_window.py
 exit
