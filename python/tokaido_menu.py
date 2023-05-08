@@ -9,6 +9,7 @@ pygame.display.set_icon(pygame.image.load("python/images/sakura.png"))
 
 menu_bg = pygame.image.load("python/images/menu.jpg")
 options_bg = pygame.image.load("python/images/settings.jpg")
+account_bg = pygame.image.load("python/images/account.jpg")
 
 def get_font(size): # Returns the BTTTRIAL font in the specify size
     return pygame.font.Font("python/BTTTRIAL.otf", size)
@@ -69,6 +70,34 @@ def options():
 
         pygame.display.update()
 
+def account():
+    pygame.display.set_caption("Compte Tokaido")
+
+    while True:
+        ACCOUNT_MOUSE_POS = pygame.mouse.get_pos()
+
+        SCREEN.blit(account_bg, (-320, -70))
+
+        ACCOUNT_TEXT = get_font(45).render("This is the ACCOUNT screen", True, "Black")
+        ACCOUNT_RECT = ACCOUNT_TEXT.get_rect(center=(640, 260))
+        SCREEN.blit(ACCOUNT_TEXT, ACCOUNT_RECT)
+
+        ACCOUNT_BACK = Button(image=None, pos=(640, 460), 
+                            text_input="BACK", font=get_font(75), base_color="Black", hovering_color="Gray")
+
+        ACCOUNT_BACK.changeColor(ACCOUNT_MOUSE_POS)
+        ACCOUNT_BACK.update(SCREEN)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if ACCOUNT_BACK.checkForInput(ACCOUNT_MOUSE_POS):
+                    main_menu()
+
+        pygame.display.update()
+
 def main_menu():
     pygame.display.set_caption("Tokaido Menu")
 
@@ -86,10 +115,12 @@ def main_menu():
                             text_input="OPTIONS", font=get_font(70), base_color="#d7fcd4", hovering_color="White")
         QUIT_BUTTON = Button(image=None, pos=(640, 545), 
                             text_input="QUIT", font=get_font(70), base_color="#d7fcd4", hovering_color="White")
+        ACCOUNT_BUTTON = Button(image=None, pos=(150, 60),
+                            text_input="COMPTE", font=get_font(50), base_color="#000000", hovering_color="White")
 
         SCREEN.blit(MENU_TEXT, MENU_RECT)
 
-        for button in [PLAY_BUTTON, OPTIONS_BUTTON, QUIT_BUTTON]:
+        for button in [PLAY_BUTTON, OPTIONS_BUTTON, QUIT_BUTTON, ACCOUNT_BUTTON]:
             button.changeColor(MENU_MOUSE_POS)
             button.update(SCREEN)
         
@@ -102,6 +133,8 @@ def main_menu():
                     play()
                 if OPTIONS_BUTTON.checkForInput(MENU_MOUSE_POS):
                     options()
+                if ACCOUNT_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    account()
                 if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
                     pygame.quit()
                     sys.exit()
