@@ -2,6 +2,7 @@ import PySimpleGUI as sg
 import os
 import sqlconnectlogin
 from sqlconnectlogin import connexion
+from fichier import Fichier
 
 layout = [
         [sg.Text("Bienvenue voyageur !", key="head", font=('Pristina', (30)))],
@@ -27,8 +28,9 @@ while True:
         mdp = str(values['mdp'])
 
         if connexion(idt, mdp):
-            print(f"Bienvenue à vous {sqlconnectlogin.result[0][0]} !")
+            print(f"Bienvenue à vous {sqlconnectlogin.result[0][3]} !")
             window['error'].Update("")
+            Fichier("connected_account.dat").ecrire(sqlconnectlogin.result)
             window.close()
             os.system('cmd /k "menu.bat"')
         

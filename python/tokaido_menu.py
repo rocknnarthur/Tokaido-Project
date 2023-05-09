@@ -1,5 +1,7 @@
 import pygame, sys
 from button import Button
+from sqlconnectlogin import get_stat
+from fichier import Fichier
 
 pygame.init()
 
@@ -13,6 +15,8 @@ account_bg = pygame.image.load("python/images/account.jpg")
 
 def get_font(size): # Returns the BTTTRIAL font in the specify size
     return pygame.font.Font("python/BTTTRIAL.otf", size)
+def get_font2(size): # Returns the Calibri font in the specify size
+    return pygame.font.Font("python/calibri.ttf", size)
 
 def play():
     pygame.display.set_caption("Tokaido")
@@ -72,17 +76,26 @@ def options():
 
 def account():
     pygame.display.set_caption("Compte Tokaido")
+    get_stat()
+    r = Fichier("connected_account.dat").lire()
+    r2 = Fichier("connected_account_stat.dat").lire()
 
     while True:
         ACCOUNT_MOUSE_POS = pygame.mouse.get_pos()
 
         SCREEN.blit(account_bg, (-320, -70))
 
-        ACCOUNT_TEXT = get_font(45).render("This is the ACCOUNT screen", True, "Black")
+        ACCOUNT_TEXT = get_font2(45).render(f"Statistiques de {r[0][3]}", True, "Gray")
+        ACCOUNT_TEXT2 = get_font2(45).render(f"Victoire : {r2[0][0]}", True, "Green")
+        ACCOUNT_TEXT3 = get_font2(45).render(f"Défaite : {r2[0][1]}", True, "Red")
         ACCOUNT_RECT = ACCOUNT_TEXT.get_rect(center=(640, 260))
+        ACCOUNT_RECT2 = ACCOUNT_TEXT2.get_rect(center=(640, 310))
+        ACCOUNT_RECT3 = ACCOUNT_TEXT3.get_rect(center=(640, 360))
         SCREEN.blit(ACCOUNT_TEXT, ACCOUNT_RECT)
+        SCREEN.blit(ACCOUNT_TEXT2, ACCOUNT_RECT2)
+        SCREEN.blit(ACCOUNT_TEXT3, ACCOUNT_RECT3)
 
-        ACCOUNT_BACK = Button(image=None, pos=(640, 460), 
+        ACCOUNT_BACK = Button(image=None, pos=(640, 560), 
                             text_input="BACK", font=get_font(75), base_color="Black", hovering_color="Gray")
 
         ACCOUNT_BACK.changeColor(ACCOUNT_MOUSE_POS)
