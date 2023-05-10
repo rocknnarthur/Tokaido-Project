@@ -114,6 +114,9 @@ def checkstation(player, case, l_meet, l_souvenir, l_meal, player_n, gamemode):
                 if price < small_price:
                     small_price = price
 
+            if player.perso == "Kinko":
+                small_price -= 1
+
             if player.purse >= small_price:
                 meal_ask = -1
                 while not -1 < meal_ask < len(mealdraw)+1:
@@ -130,10 +133,12 @@ def checkstation(player, case, l_meet, l_souvenir, l_meal, player_n, gamemode):
                         with open('python/repas.csv') as mealcsv:
                             reader = csv.reader(mealcsv, delimiter = ';')
                             for row in reader:
-                                print(row)
                                 if repas == row[0]:
                                     price = int(row[1])
                                     print(price)
+
+                        if player.perso == "Kinko":
+                            price -= 1
 
                         if player.purse < price:
                             print("Repas trop cher pour vous ! En choisir un autre")

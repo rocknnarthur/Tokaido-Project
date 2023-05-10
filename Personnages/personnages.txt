@@ -1,10 +1,10 @@
 Personnages:
 
-Kinko le ronin / Pièces de départ : 7 / Capacité : Prix de chaque repas baissé de 1 unité
+Kinko le ronin / Pièces de départ : 7 / Capacité : Prix de chaque repas baissé de 1 unité  FAIT
 Hirotada le prêtre / Pièces de départ : 8 / Capacité : A chaque arrêt à un temple, donne 1 pièce provenant de la banque
 Yoshiyasu le fonctionnaire / Pièces de départ : 9 / Capacité : pioche 2 cartes Rencontre, conserve celle de son choix et replace la seconde au-dessous de la pioche (sans la montrer aux autres joueurs)
 Zen-emon le marchant / Pièces de départ : 6 / Capacité : peut acheter l’un des Souvenirs pour 1 seule pièce au lieu du prix indiqué, une fois par Echoppe.
-Mitsukuni le viellard / Pièces de départ : 6 / Capacité : Chaque carte Source chaude et chaque carte Accomplissement rapporte 1 point supplémentaire
+Mitsukuni le vieillard / Pièces de départ : 6 / Capacité : Chaque carte Source chaude et chaque carte Accomplissement rapporte 1 point supplémentaire
 Sasayakko la geisha / Pièces de départ : 5 / Capacité : Dans les villages, si la Geisha achète au moins 2 Souvenirs, le moins cher des 2 lui est offert.
 Umegae la saltimbanque / Pièces de départ : 5 / Capacité : gagne 1 point et 1 pièce lors de chaque rencontre. Précision : ce gain a lieu avant d’appliquer les effets de la carte Rencontre piochée.
 Chuubei le messager / Pièces de départ : 4 / Capacité : pioche 1 carte Rencontre lorsqu’il arrive dans chacun des 3 Relais intermédiaires (avant le Repas).

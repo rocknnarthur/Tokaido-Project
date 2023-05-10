@@ -1,9 +1,11 @@
 class Player:
-    def __init__(self, pseudo, couleur, station, argent):
+    def __init__(self, pseudo, couleur, station, argent, personnage, genre):
         self.pseudo = pseudo
         self.color = couleur
         self.locate = station
         self.purse = argent
+        self.perso = personnage
+        self.gender = genre
         self.pts = 0
         self.amen = 0
         self.riz = 0
