@@ -1,3 +1,6 @@
+import pygame
+import sys
+
 class Player:
     def __init__(self, pseudo, couleur, station, argent, personnage, genre):
         self.pseudo = pseudo
@@ -17,3 +20,12 @@ class Player:
 
     def afficher(self):
         print(f"{self.pseudo}, {self.color}, station {self.locate}, {self.purse} pieces, {self.pts} points")
+
+class Crosshair(pygame.sprite.Sprite):
+    def __init__(self, picture_path):
+        super().__init__()
+        self.image = pygame.image.load(picture_path)
+        self.image = pygame.transform.scale(self.image, (50,50))
+        self.rect = self.image.get_rect()
+    def update (self):
+        self.rect.center = pygame.mouse.get_pos()

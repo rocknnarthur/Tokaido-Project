@@ -1,5 +1,6 @@
 import pygame, sys
 from button import Button
+from classes import Crosshair
 from sqlconnectlogin import get_stat
 from fichier import Fichier
 
@@ -8,10 +9,16 @@ pygame.init()
 SCREEN = pygame.display.set_mode((1280, 720))
 pygame.display.set_caption("Tokaido Menu")
 pygame.display.set_icon(pygame.image.load("python/images/sakura.png"))
+pygame.mouse.set_visible(False)
 
 menu_bg = pygame.image.load("python/images/menu.jpg")
 options_bg = pygame.image.load("python/images/settings.jpg")
 account_bg = pygame.image.load("python/images/account.jpg")
+
+# crosshair
+crosshair = Crosshair("python/images/sakura_flower.png")
+crosshair_group = pygame.sprite.Group()
+crosshair_group.add(crosshair)
 
 def get_font(size): # Returns the BTTTRIAL font in the specify size
     return pygame.font.Font("python/BTTTRIAL.otf", size)
@@ -44,6 +51,8 @@ def play():
                 if PLAY_BACK.checkForInput(PLAY_MOUSE_POS):
                     main_menu()
 
+        crosshair_group.draw(SCREEN)
+        crosshair_group.update()
         pygame.display.update()
     
 def options():
@@ -72,6 +81,8 @@ def options():
                 if OPTIONS_BACK.checkForInput(OPTIONS_MOUSE_POS):
                     main_menu()
 
+        crosshair_group.draw(SCREEN)
+        crosshair_group.update()
         pygame.display.update()
 
 def account():
@@ -85,12 +96,15 @@ def account():
 
         SCREEN.blit(account_bg, (-320, -70))
 
-        ACCOUNT_TEXT = get_font2(45).render(f"Statistiques de {r[0][3]}", True, "Gray")
+        ACCOUNT_TEXT = get_font2(45).render(f"Statistiques de {r[0][3]}", True, "White")
         ACCOUNT_TEXT2 = get_font2(45).render(f"Victoire : {r2[0][0]}", True, "Green")
         ACCOUNT_TEXT3 = get_font2(45).render(f"Défaite : {r2[0][1]}", True, "Red")
         ACCOUNT_RECT = ACCOUNT_TEXT.get_rect(center=(640, 260))
         ACCOUNT_RECT2 = ACCOUNT_TEXT2.get_rect(center=(640, 310))
         ACCOUNT_RECT3 = ACCOUNT_TEXT3.get_rect(center=(640, 360))
+        ACCOUNT_BGRECT = pygame.image.load("python/images/rect2.png")
+
+        SCREEN.blit(ACCOUNT_BGRECT, (340, 160))
         SCREEN.blit(ACCOUNT_TEXT, ACCOUNT_RECT)
         SCREEN.blit(ACCOUNT_TEXT2, ACCOUNT_RECT2)
         SCREEN.blit(ACCOUNT_TEXT3, ACCOUNT_RECT3)
@@ -109,6 +123,8 @@ def account():
                 if ACCOUNT_BACK.checkForInput(ACCOUNT_MOUSE_POS):
                     main_menu()
 
+        crosshair_group.draw(SCREEN)
+        crosshair_group.update()
         pygame.display.update()
 
 def main_menu():
@@ -152,6 +168,9 @@ def main_menu():
                     pygame.quit()
                     sys.exit()
 
+        crosshair_group.draw(SCREEN)
+        crosshair_group.update()
         pygame.display.update()
+        
 
 main_menu()

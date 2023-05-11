@@ -1,6 +1,6 @@
 import random
 import csv
-from player import Player
+from classes import Player
 import station_effect as se
 
 # Starting game menu
