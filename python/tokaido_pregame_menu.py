@@ -42,6 +42,7 @@ def set_color(selected, value) -> None:
     print(f'Set player number to {selected[0][0]} ({value})')
     color = selected[0]
 
+
 # LOOP MENUS
 def main_menu():
 
@@ -93,30 +94,29 @@ def menu_color():
 
     l_color = [('purple', 1), ('yellow', 2), ('green', 3), ('gray', 4), ('blue', 5)]
     for n in range(1, n_player+1):
+        
         color = l_color[0]
 
         menu3.add.selector(f'Couleur joueur {n}: ', l_color, onchange=set_color)
-        menu3.add.button('Next', None)
+        menu3.add.text_input('Press X key to valid', maxchar=0)
         menu3.add.button('Quit', pygame_menu.events.EXIT)
 
         menu3.select_widget(None)
 
-        while True:
-
-            next = menu3.get_selected_widget().get_title()
-            if next == 'Next':
-                print("ok")
-                break
+        tr = True
+        while tr:
 
             events = pygame.event.get()
             for event in events:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     break
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_x:
+                        print("X")
+                        tr = False
 
             # Draw the menu
-            surface.fill((25, 0, 50))
-
             menu3.update(events)
             menu3.draw(surface)
 
@@ -124,9 +124,13 @@ def menu_color():
             crosshair_group.update()
             pygame.display.flip()
 
+        
+        menu3.clear()
         print(color)
         l_color.remove(color)
-        menu3.close()
+        pygame.display.update()
+        
+        
 
 
 #def start_the_game() -> None:
