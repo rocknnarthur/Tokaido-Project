@@ -1,4 +1,4 @@
-import pygame
+import pygame, sys, os
 import pygame_menu
 from classes import Crosshair
 
@@ -13,6 +13,12 @@ crosshair = Crosshair("python/images/sakura_flower.png")
 crosshair_group = pygame.sprite.Group()
 crosshair_group.add(crosshair)
 
+# GO BACK TO TOKAIDO MENU
+def back_mainmenu():
+    pygame_menu.events.EXIT
+    pygame.quit()
+    os.system('cmd /k "menu.bat"')
+    
 
 # FUNCTIONS GET VALUES
 def set_difficulty(selected, value) -> None:
@@ -39,8 +45,29 @@ def set_color(selected, value) -> None:
     """
     Set the color of players in the game.
     """
-    print(f'Set player number to {selected[0][0]} ({value})')
+    print(f'Set player color to {selected[0][0]} ({value})')
     color = selected[0]
+
+def set_pseudo(selected, value) -> None:
+    global pseudo
+
+    """
+    Set the pseudo of players in the game.
+    """
+    print(f'Set player pseudo to {selected[0][0]} ({value})')
+    pseudo = selected[0]
+
+def set_gender(selected, value) -> None:
+    global gender
+    global change
+
+    """
+    Set the gender of players in the game.
+    """
+    print(f'Set player gender to {selected[0][0]} ({value})')
+    gender = selected[0][0]
+    change = True
+
 
 
 # LOOP MENUS
@@ -49,6 +76,8 @@ def main_menu():
     global mode
 
     mode = 0
+
+    menu.select_widget(None)
 
     while True:
         events = pygame.event.get()
@@ -70,6 +99,8 @@ def main_menu():
 def menu_nbr_player():
     global n_player
     n_player = 2
+
+    menu2.select_widget(None)
 
     while True:
         events = pygame.event.get()
@@ -93,13 +124,14 @@ def menu_color():
     global color
 
     l_color = [('purple', 1), ('yellow', 2), ('green', 3), ('gray', 4), ('blue', 5)]
+    lp_color = []
     for n in range(1, n_player+1):
         
         color = l_color[0]
 
         menu3.add.selector(f'Couleur joueur {n}: ', l_color, onchange=set_color)
-        menu3.add.text_input('Press X key to valid', maxchar=0)
-        menu3.add.button('Quit', pygame_menu.events.EXIT)
+        menu3.add.text_input('Press X key to valid', maxchar=1)
+        menu3.add.button('Quit', back_mainmenu)
 
         menu3.select_widget(None)
 
@@ -127,10 +159,88 @@ def menu_color():
         
         menu3.clear()
         print(color)
+        lp_color.append(color[0])
+        print(lp_color)
         l_color.remove(color)
         pygame.display.update()
+
+    menu_player()
         
+    
+def menu_player():
+    global pseudo
+    global gender
+    global change
+
+    l_pseudo = [('Art333', 1), ('Vitarse', 2), ('Frimoosse', 3)]
+    lp_pseudo = []
+    for n in range(1, n_player+1):
         
+        pseudo = l_pseudo[0]
+        gender = 'Human'
+        change = False
+
+        menu4.add.selector(f'Pseudo joueur {n}: ', l_pseudo, onchange=set_pseudo)
+        menu4.add.selector('Genre: ', [('Human', 0), ('Computer', 1)], onchange=set_gender)
+        menu4.add.text_input('Press X key to valid', maxchar=1)
+        menu4.add.button('Quit', back_mainmenu)
+
+        menu4.select_widget(None)
+
+        tr = True
+        while tr:
+            
+            if change:
+                if gender == 'Human':
+                    menu4.clear()
+                    menu4.add.selector(f'Pseudo joueur {n}: ', l_pseudo, onchange=set_pseudo)
+                    menu4.add.selector('Genre: ', [('Human', 0), ('Computer', 1)], onchange=set_gender)
+                    menu4.add.text_input('Press X key to valid', maxchar=1)
+                    menu4.add.button('Quit', back_mainmenu)
+                    change = False
+                    menu4.update(events)
+                    menu4.draw(surface)
+                    pygame.display.update()
+
+                elif gender == 'Computer':
+                    menu4.clear()
+                    pseudo_ordi = menu4.add.text_input(f'Pseudo ordinateur {n}: ', default=f'Ordi {n}', maxchar=10)
+                    menu4.add.selector('Genre: ', [('Computer', 1), ('Human', 0)], onchange=set_gender)
+                    menu4.add.text_input('Press X key to valid', maxchar=1)
+                    menu4.add.button('Quit', back_mainmenu)
+                    change = False
+                    menu4.update(events)
+                    menu4.draw(surface)
+                    pygame.display.update()
+
+            events = pygame.event.get()
+            for event in events:
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    break
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_x:
+                        print("X")
+                        tr = False
+
+            # Draw the menu
+            menu4.update(events)
+            menu4.draw(surface)
+
+            crosshair_group.draw(surface)
+            crosshair_group.update()
+            pygame.display.flip()
+
+        if gender == 'Computer':
+            pseudo = pseudo_ordi.get_value()
+            lp_pseudo.append((pseudo, gender))
+        menu4.clear()
+        print(pseudo, gender)
+        if gender == 'Human':
+            lp_pseudo.append((pseudo[0], gender))
+            l_pseudo.remove(pseudo)
+        print(lp_pseudo)
+        pygame.display.update()
 
 
 #def start_the_game() -> None:
@@ -141,7 +251,7 @@ def menu_color():
     #global user_name
     #print(f'{user_name.get_value()}, Do the job here!')
 
-
+# MENUS
 menu = pygame_menu.Menu(
     width=1280,
     height=720,
@@ -163,14 +273,22 @@ menu3 = pygame_menu.Menu(
     title='Choix des couleurs'
 )
 
+menu4 = pygame_menu.Menu(
+    width=1280,
+    height=720,
+    theme=pygame_menu.themes.THEME_DARK,
+    title='Pseudo et genre des joueurs'
+)
+
 #user_name = menu.add.text_input('Name: ', default='John Doe', maxchar=10)
+menu.add.text_input('Utilisez les flèches et le bouton entrer de préférence', maxchar=1)
 menu.add.selector('Mode: ', [('Noob Travel', 0), ('Normal Travel', 1), ('Back Travel', 2), ('Gastronomy Travel', 3), ('Setups Travel', 4)], onchange=set_difficulty)
 menu.add.button('Next', menu_nbr_player)
-menu.add.button('Quit', pygame_menu.events.EXIT)
+menu.add.button('Quit', back_mainmenu)
 
 menu2.add.selector('Nombre joueurs: ', [('2', 2), ('3', 3), ('4', 4), ('5', 5)], onchange=set_player_nbr)
 menu2.add.button('Next', menu_color)
-menu2.add.button('Quit', pygame_menu.events.EXIT)
+menu2.add.button('Quit', back_mainmenu)
 
 
 main_menu()
