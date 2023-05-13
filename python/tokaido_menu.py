@@ -28,6 +28,7 @@ def get_font2(size): # Returns the Calibri font in the specify size
 def play():
     pygame.quit()
     os.system('cmd /k "game_set.bat"')
+    sys.exit()
     
 def options():
     pygame.display.set_caption("Options")

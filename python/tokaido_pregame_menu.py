@@ -1,4 +1,4 @@
-import pygame, os
+import pygame, os, sys
 import pygame_menu
 from classes import Crosshair
 from fichier import Fichier
@@ -257,6 +257,7 @@ def start_game(lplayer, mode) -> None:
     pygame_menu.events.EXIT
     pygame.quit()
     os.system('cmd /k "board_game.bat"')
+    sys.exit()
 
 # MENUS
 menu = pygame_menu.Menu(

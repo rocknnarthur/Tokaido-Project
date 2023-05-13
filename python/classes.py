@@ -21,13 +21,13 @@ class Player:
         self.mealdeck = []
 
     def afficher(self):
-        print(f"{self.pseudo}, {self.color}, station {self.locate}, {self.purse} pieces, {self.pts} points, {self.perso}, {self.genre}")
+        print(f"{self.pseudo}, {self.color}, station {self.locate}, {self.purse} pieces, {self.pts} points, {self.perso}, {self.gender}")
 
 class Crosshair(pygame.sprite.Sprite):
     def __init__(self, picture_path):
         super().__init__()
         self.image = pygame.image.load(picture_path)
-        self.image = pygame.transform.scale(self.image, (50,50))
+        self.image = pygame.transform.scale(self.image, (40,40))
         self.rect = self.image.get_rect()
         
     def update(self):

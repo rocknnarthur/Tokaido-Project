@@ -7,6 +7,7 @@ from fichier import Fichier
 # Init
 pygame.init()
 pygame.display.set_caption("Plateau Tokaido")
+pygame.display.set_icon(pygame.image.load("python/images/sakura.png"))
 pygame.mouse.set_visible(False)
 screen = pygame.display.set_mode((1080,720))
 
