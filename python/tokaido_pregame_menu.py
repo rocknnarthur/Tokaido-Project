@@ -1,6 +1,7 @@
-import pygame, sys, os
+import pygame, os
 import pygame_menu
 from classes import Crosshair
+from fichier import Fichier
 
 pygame.init()
 pygame.display.set_caption("Game settings")
@@ -164,23 +165,24 @@ def menu_color():
         l_color.remove(color)
         pygame.display.update()
 
-    menu_player()
+    menu_player(lp_color)
         
     
-def menu_player():
+def menu_player(lp_color):
     global pseudo
     global gender
     global change
 
-    l_pseudo = [('Art333', 1), ('Vitarse', 2), ('Frimoosse', 3)]
+    l_pseudo = [('Art333', 1), ('Vitarse', 2), ('Frimoosse', 3), ('Zeldomar', 4), ('Lauyana', 5)]
     lp_pseudo = []
-    for n in range(1, n_player+1):
+    lplayer = []
+    for n in range(0, n_player):
         
         pseudo = l_pseudo[0]
         gender = 'Human'
         change = False
 
-        menu4.add.selector(f'Pseudo joueur {n}: ', l_pseudo, onchange=set_pseudo)
+        menu4.add.selector(f'Pseudo joueur {lp_color[n]}: ', l_pseudo, onchange=set_pseudo)
         menu4.add.selector('Genre: ', [('Human', 0), ('Computer', 1)], onchange=set_gender)
         menu4.add.text_input('Press X key to valid', maxchar=1)
         menu4.add.button('Quit', back_mainmenu)
@@ -193,7 +195,7 @@ def menu_player():
             if change:
                 if gender == 'Human':
                     menu4.clear()
-                    menu4.add.selector(f'Pseudo joueur {n}: ', l_pseudo, onchange=set_pseudo)
+                    menu4.add.selector(f'Pseudo joueur {lp_color[n]}: ', l_pseudo, onchange=set_pseudo)
                     menu4.add.selector('Genre: ', [('Human', 0), ('Computer', 1)], onchange=set_gender)
                     menu4.add.text_input('Press X key to valid', maxchar=1)
                     menu4.add.button('Quit', back_mainmenu)
@@ -204,7 +206,7 @@ def menu_player():
 
                 elif gender == 'Computer':
                     menu4.clear()
-                    pseudo_ordi = menu4.add.text_input(f'Pseudo ordinateur {n}: ', default=f'Ordi {n}', maxchar=10)
+                    pseudo_ordi = menu4.add.text_input(f'Pseudo ordinateur {n+1}: ', default=f'Ordi {n+1}', maxchar=10)
                     menu4.add.selector('Genre: ', [('Computer', 1), ('Human', 0)], onchange=set_gender)
                     menu4.add.text_input('Press X key to valid', maxchar=1)
                     menu4.add.button('Quit', back_mainmenu)
@@ -242,14 +244,19 @@ def menu_player():
         print(lp_pseudo)
         pygame.display.update()
 
+    for p in range(0, n_player):
+        lplayer.append((lp_pseudo[p][0], lp_color[p], lp_pseudo[p][1]))
+    start_game(lplayer, mode)
 
-#def start_the_game() -> None:
-    #"""
-    #Function that starts a game. This is raised by the menu button,
-    #here menu can be disabled, etc.
-    #"""
-    #global user_name
-    #print(f'{user_name.get_value()}, Do the job here!')
+
+def start_game(lplayer, mode) -> None:
+    Fichier("lplayer.dat").ecrire(lplayer)
+    Fichier("gamemode.dat").ecrire(mode)
+
+    print('Lancement du jeu')
+    pygame_menu.events.EXIT
+    pygame.quit()
+    os.system('cmd /k "board_game.bat"')
 
 # MENUS
 menu = pygame_menu.Menu(

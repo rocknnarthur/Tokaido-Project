@@ -104,7 +104,7 @@ for p in range(1, player_n+1):
         startmoney = tuiledraw[tuile_ask-1][1]
         tuile = tuiledraw[tuile_ask-1][0]
         print(tuiledraw[tuile_ask-1])
-    pl = Player(ask_pseudo, lplayer_color[p-1], fstation, startmoney, tuile, "humain")
+    pl = Player(ask_pseudo, lplayer_color[p-1], fstation, startmoney, tuile, "Human")
     lplayer.append(pl)
 
 # Player shuffle for starting

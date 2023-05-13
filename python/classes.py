@@ -8,6 +8,8 @@ class Player:
         self.locate = station
         self.purse = argent
         self.perso = personnage
+        if self.perso == None:
+            self.perso = "Aucun perso"
         self.gender = genre
         self.pts = 0
         self.amen = 0
@@ -19,7 +21,7 @@ class Player:
         self.mealdeck = []
 
     def afficher(self):
-        print(f"{self.pseudo}, {self.color}, station {self.locate}, {self.purse} pieces, {self.pts} points")
+        print(f"{self.pseudo}, {self.color}, station {self.locate}, {self.purse} pieces, {self.pts} points", {self.perso}, {self.genre})
 
 class Crosshair(pygame.sprite.Sprite):
     def __init__(self, picture_path):
@@ -27,5 +29,6 @@ class Crosshair(pygame.sprite.Sprite):
         self.image = pygame.image.load(picture_path)
         self.image = pygame.transform.scale(self.image, (50,50))
         self.rect = self.image.get_rect()
-    def update (self):
+        
+    def update(self):
         self.rect.center = pygame.mouse.get_pos()
