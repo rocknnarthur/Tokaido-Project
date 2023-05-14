@@ -1,5 +1,6 @@
 import random
 import csv
+import pygame
 
 riz_complete = 0
 mont_complete = 0
@@ -475,3 +476,124 @@ def templebonus(lplayer):
 
 
 # SUCCESS FUNCTION !
+
+
+#MOVE FONCTION
+def move_set(move, current_p, relais, a, lplayer, player_n, ldb_case, l_meet, l_souvenir, l_meal, gamemode):
+
+    if not move <= current_p.locate or move > relais[a]:
+        double = False
+
+        # Read CSV for board stations
+        with open('python/board.csv') as board:
+            reader = csv.reader(board, delimiter = ';')
+            line_count = move
+            for row in reader:
+                if str(line_count) == row[0]:
+                    case = row[1]
+            
+        # Check if move is legally possible and legal = apply effect, else loop again
+        if move > current_p.locate and move <= relais[a]:
+            for p in lplayer:
+                if move == p.locate and move != relais[a]:
+                    if player_n >= 4:
+                        count = 0
+                        for p2 in lplayer:
+                            if move-0.5 < p2.locate < move+0.5:
+                                count += 1
+                        if count < 2:
+                            for num in ldb_case:
+                                if num == move:
+                                    double = True
+                                    break
+                            if double:
+                                move = float(move)
+                                move -= 0.1
+                            else:
+                                print(f"vous ne pouvez pas aller sur cette case, elle est occupée par le joueur {p.color} !")
+                                return False
+                        else:
+                            print(f"vous ne pouvez pas aller sur cette case, elle est occupée par le joueur {p.color} !")
+                            return False
+                    else:
+                        print(f"vous ne pouvez pas aller sur cette case, elle est occupée par le joueur {p.color} !")
+                        return False
+            if move != 0:
+                if not checkstation(current_p, case, l_meet, l_souvenir, l_meal, player_n, gamemode):
+                    return False
+                else:
+                    # Move player
+                    current_p.locate = move
+                    if double:
+                        move += 0.1
+                        move = int(move)
+                        double = False
+                    print(f"Le joueur {current_p.color} est sur une case {case} situé à {move}.")
+                    return True
+
+        else:
+            print('Pas de retour en arrière ni de dépassement de relais !')
+            return False
+
+    else:
+        print('Pas de retour en arrière ni de dépassement de relais !')
+        return False
+    
+
+
+#HUD FONCTION
+def hud_set(green, purple, yellow, blue, gray, player, screen):
+    hud_color = None
+
+    if player.color == "green":
+        hud_color = green
+    elif player.color == "purple":
+        hud_color = purple
+    elif player.color == "yellow":
+        hud_color = yellow
+    elif player.color == "blue":
+        hud_color = blue
+    elif player.color == "gray":
+        hud_color = gray
+
+    hud = pygame.Surface((1280,75))
+    hud.fill(hud_color)
+    rect = hud.get_rect(topleft= (0,0))
+
+    font = pygame.font.Font(None, 40)
+    pseudo_text = font.render(str(player.pseudo), None, (0,0,0))
+    money_text = font.render(str(player.purse), None, (0,0,0))
+    riz_text = font.render(str(player.riz), None, (0,0,0))
+    mont_text = font.render(str(player.mont), None, (0,0,0))
+    mer_text = font.render(str(player.mer), None, (0,0,0))
+    souv_text = font.render(str(len(player.souvdeck)), None, (0,0,0))
+
+    coin_img = pygame.image.load("python/images/coin.png")
+    coin_img = pygame.transform.scale(coin_img, (50,50))
+    riz_img = pygame.image.load("python/images/dos_riz.jpeg")
+    riz_img = pygame.transform.scale(riz_img, (30,50))
+    mont_img = pygame.image.load("python/images/dos_mont.jpeg")
+    mont_img = pygame.transform.scale(mont_img, (30,50))
+    mer_img = pygame.image.load("python/images/dos_mer.jpeg")
+    mer_img = pygame.transform.scale(mer_img, (30,50))
+    souv_img = pygame.image.load("python/images/dos_souv.jpeg")
+    souv_img = pygame.transform.scale(souv_img, (30,50))
+
+    screen.blit(hud, rect)
+
+    screen.blit(coin_img, (25,12))
+    screen.blit(money_text, (80,25))
+    
+    screen.blit(riz_img, (125,12))
+    screen.blit(riz_text, (160,25))
+    
+    screen.blit(mont_img, (205,12))
+    screen.blit(mont_text, (240,25))
+    
+    screen.blit(mer_img, (285,12))
+    screen.blit(mer_text, (320,25))
+
+    screen.blit(souv_img, (365,12))
+    screen.blit(souv_text, (400,25))
+
+    screen.blit(pseudo_text, (875,25))
