@@ -3,6 +3,7 @@ import station_effect as se
 import random
 import csv
 import pickle
+import time
 from classes import Player, Case, Crosshair
 from fichier import Fichier
 
@@ -161,6 +162,7 @@ random.shuffle(l_meet)
 
 # Fixing first player turn
 current_p = lplayer[0]
+print(f'Le joueur {current_p.color} joue')
 
 #MAIN LOOP
 while True:
@@ -237,9 +239,35 @@ while True:
                 for m in range(range_compteur[0]):
                     case = liste_case[m]
                     if case.rect.collidepoint(mouse_pos):
-                       #MOVE STATION
-                       move = int(case.nom)+1
-                       se.move_set(move, current_p, relais, a, lplayer, player_n, ldb_case, l_meet, l_souvenir, l_meal, gamemode)
+                        #MOVE STATION
+                        move = int(case.nom)+1
+                        if se.move_set(move, current_p, relais, a, lplayer, player_n, ldb_case, l_meet, l_souvenir, l_meal, gamemode):
+                            # Check who's playing next (= farthest player)
+                            small_locate = 100
+                            for p in lplayer:
+                                if p.locate < small_locate:
+                                    small_locate = p.locate
+                                    current_p = p
+
+                            # Checking if all players are arrived at next relais
+                            nbrelais = 0
+                            for p in lplayer:
+                                if p.locate == relais[a]:
+                                    nbrelais += 1
+                            
+                            if nbrelais == player_n:
+                                a += 1
+                                # Check if the game is finished
+                                if a == 5:
+                                    break
+                                print(f"Vous passez maintenant à la {a}e partie du plateau.")
+                                l_meal.extend(se.mealdraw)
+                                print(l_meal)
+                                se.mealdraw = []
+                                print(se.mealdraw)
+                                nbrelais = 0
+
+                            print(f'Le joueur {current_p.color} joue')
 
     pygame.time.Clock().tick(120)
 

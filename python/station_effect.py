@@ -1,5 +1,6 @@
 import random
 import csv
+import time
 import pygame
 
 riz_complete = 0
