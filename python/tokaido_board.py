@@ -165,15 +165,16 @@ current_p = lplayer[0]
 print(f'Le joueur {current_p.color} joue')
 
 #MAIN LOOP
-while True:
+loop = True
+while loop:
 
     #BLIT BOARD
     scroll_image(background, background2, background3)
 
     if compteur_case == 1:
-          range_compteur = (15,0)
+          range_compteur = (0, 15)
           """selon la partie du plateau où on se trouve, j'organise la position des cases cliquables (invisibles)"""
-          for i in range(range_compteur[0]):
+          for i in range(range_compteur[1]):
                screen.blit(liste_case[i].surface,liste_case[i].rect)
      
     if compteur_case == 2:
@@ -221,6 +222,7 @@ while True:
                         elif str(float(line_count)) == row[0]:
                             p.x = int(row[2])
                             p.y = int(row[3])
+
                     elif a == 2:
                         if str(line_count) == row[0]:
                             p.x = int(row[4])
@@ -228,6 +230,22 @@ while True:
                         elif str(float(line_count)) == row[0]:
                             p.x = int(row[4])
                             p.y = int(row[5])
+
+                    elif a == 3:
+                        if str(line_count) == row[0]:
+                            p.x = int(row[6])
+                            p.y = int(row[7])
+                        elif str(float(line_count)) == row[0]:
+                            p.x = int(row[6])
+                            p.y = int(row[7])
+
+                    elif a == 4:
+                        if str(line_count) == row[0]:
+                            p.x = int(row[8])
+                            p.y = int(row[9])
+                        elif str(float(line_count)) == row[0]:
+                            p.x = int(row[8])
+                            p.y = int(row[9])
 
             screen.blit(pygame.image.load(f"python/images/player_{p.color}.png"), (p.x, p.y))
         
@@ -241,55 +259,50 @@ while True:
 
         if event.type == pygame.MOUSEBUTTONDOWN:
             mouse_pos = pygame.mouse.get_pos()
-            if compteur_case == 1:
-                for m in range(range_compteur[0]):
+            if compteur_case > 0:
+                for m in range(range_compteur[1]):
                     case = liste_case[m]
                     if case.rect.collidepoint(mouse_pos):
                         #MOVE STATION
                         move = int(case.nom)+1
                         if se.move_set(move, current_p, relais, a, lplayer, player_n, ldb_case, l_meet, l_souvenir, l_meal, gamemode):
-                            # Check who's playing next (= farthest player)
-                            small_locate = 100
-                            for p in lplayer:
-                                if p.locate < small_locate:
-                                    small_locate = p.locate
-                                    current_p = p
-
+                            
                             # Checking if all players are arrived at next relais
                             nbrelais = 0
                             for p in lplayer:
                                 if p.locate == relais[a]:
                                     nbrelais += 1
 
-                                if current_p.locate == relais[a]:
-                                    p.locate -= relais_nb
-                                    print(p.color, p.locate)
-                                    relais_nb += 0.1
+                            if current_p.locate == relais[a]:
+                                current_p.locate -= relais_nb
+                                print(current_p.color, current_p.locate)
+                                relais_nb += 0.1
 
-                                    small_locate = 100
-                                    for p in lplayer:
-                                        if p.locate < small_locate:
-                                            small_locate = p.locate
-                                            current_p = p
+                            # Check who's playing next (= farthest player)
+                            small_locate = 100
+                            for p in lplayer:
+                                if p.locate < small_locate:
+                                    small_locate = p.locate
+                                    current_p = p
                             
                             if nbrelais == player_n:
                                 time.sleep(1.0)
                                 a += 1
-                                relais_nb = 0
-                                pygame.display.update()
 
                                 # Check if the game is finished
                                 if a == 5:
-                                    break
+                                    loop = False
 
                                 print(f"Vous passez maintenant à la {a}e partie du plateau.")
                                 l_meal.extend(se.mealdraw)
                                 print(l_meal)
                                 se.mealdraw = []
                                 print(se.mealdraw)
-                                nbrelais = 0
 
+                                relais_nb = 0
+                                
                                 position_state = True
+                                pygame.display.update()
 
                             print(f'Le joueur {current_p.color} joue')
 
@@ -298,3 +311,42 @@ while True:
     crosshair_group.draw(screen)
     crosshair_group.update()
     pygame.display.update()
+
+
+
+# GAME IS OVER AND WE NEED ADD BONUS POINTS
+print("FIN DE PARTIE, PLACE AU CLASSEMENT")
+
+# Add Souvenir points to each player
+for p in lplayer:
+    se.souvenircheck(p)
+
+# Temple bonus points
+se.templebonus(lplayer)
+
+# Add Success points (4 ENDGAME SUCCESS)
+# GOURMET, BAIGNEUR, BAVARD, COLLECTIONNEUR
+
+# Results and show the winner
+winner = None
+lp_result = []
+for np in range(len(lplayer)):
+    bigger_pts = -1
+    for p in lplayer:
+        if p.pts > bigger_pts:
+            bigger_pts = p.pts
+            winner = p
+    lp_result.append(winner)
+    lplayer.remove(winner)
+    
+
+print(f"""
+Félicitations !
+Le joueur {lp_result[0].color} {lp_result[0].pseudo} remporte cette partie avec {lp_result[0].pts}pts !
+""")
+
+print("Classement des perdants:")
+for other in range(1, len(lp_result)):
+    print(f"En {other+1}e, le joueur {lp_result[other].color} {lp_result[other].pseudo} avec {lp_result[other].pts}pts")
+
+print("\nstopping script")
