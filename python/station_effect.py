@@ -568,6 +568,7 @@ def hud_set(green, purple, yellow, blue, gray, player, screen):
     mont_text = font.render(str(player.mont), None, (0,0,0))
     mer_text = font.render(str(player.mer), None, (0,0,0))
     souv_text = font.render(str(len(player.souvdeck)), None, (0,0,0))
+    pts_text = font.render(str(player.pts), None, (0,0,0))
 
     coin_img = pygame.image.load("python/images/coin.png")
     coin_img = pygame.transform.scale(coin_img, (50,50))
@@ -579,6 +580,8 @@ def hud_set(green, purple, yellow, blue, gray, player, screen):
     mer_img = pygame.transform.scale(mer_img, (30,50))
     souv_img = pygame.image.load("python/images/dos_souv.jpeg")
     souv_img = pygame.transform.scale(souv_img, (30,50))
+    pts_img = pygame.image.load("python/images/baluchon.png")
+    pts_img = pygame.transform.scale(pts_img, (40,30))
 
     screen.blit(hud, rect)
 
@@ -596,5 +599,8 @@ def hud_set(green, purple, yellow, blue, gray, player, screen):
 
     screen.blit(souv_img, (365,12))
     screen.blit(souv_text, (400,25))
+
+    screen.blit(pts_img, (775,20))
+    screen.blit(pts_text, (825,25))
 
     screen.blit(pseudo_text, (875,25))

@@ -220,12 +220,6 @@ while True:
         screen.blit(pygame.image.load(f"python/images/player_{p.color}.png"), (p.x, p.y))
         
 
-    
-
-    """
-    COMPLETE WITH THE CODE FROM tokaido.py
-    """
-
     # PYGAME EVENTS DETECTION
     events = pygame.event.get()
     for event in events:
