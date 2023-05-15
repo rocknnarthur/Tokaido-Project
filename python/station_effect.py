@@ -78,10 +78,11 @@ def panoramacheck(player, case):
 
 
 mealdraw = []
+relais_nb = 0
 # Check the station for applying effect on player
 def checkstation(player, case, l_meet, l_souvenir, l_meal, player_n, gamemode):
 
-    global mealdraw
+    global mealdraw, relais_nb
 
     # Relais
     if case == "relais":
@@ -98,8 +99,6 @@ def checkstation(player, case, l_meet, l_souvenir, l_meal, player_n, gamemode):
                 for meal in range(0, n_meal):
                     mealdraw.append(l_meal[meal])
                 del(l_meal[0:3])
-
-            
             
             print(l_meal)
             print(mealdraw)
@@ -161,11 +160,11 @@ def checkstation(player, case, l_meet, l_souvenir, l_meal, player_n, gamemode):
             else:
                 print("Vous n'avez pas les moyens d'acheter l'un des repas proposés.")
 
-            return True
 
         else:
             print("Vous n'avez pas d'argent donc aucun achat de repas possible.")
-            return True
+            
+        return True
     
     # Echoppe
     if case == "echoppe":
@@ -486,11 +485,14 @@ def move_set(move, current_p, relais, a, lplayer, player_n, ldb_case, l_meet, l_
         double = False
 
         # Read CSV for board stations
+        case = None
         with open('python/board.csv') as board:
             reader = csv.reader(board, delimiter = ';')
             line_count = move
             for row in reader:
                 if str(line_count) == row[0]:
+                    case = row[1]
+                elif str(float(line_count)) == row[0]:
                     case = row[1]
             
         # Check if move is legally possible and legal = apply effect, else loop again
@@ -524,11 +526,16 @@ def move_set(move, current_p, relais, a, lplayer, player_n, ldb_case, l_meet, l_
                     return False
                 else:
                     # Move player
-                    current_p.locate = move
+                    if type(move) != "float":
+                        current_p.locate = float(move)
+                    else:
+                        current_p.locate = move
                     if double:
                         move += 0.1
                         move = int(move)
                         double = False
+                    if case == "relais":
+                        move = round(move)
                     print(f"Le joueur {current_p.color} est sur une case {case} situé à {move}.")
                     return True
 

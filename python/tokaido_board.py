@@ -44,8 +44,7 @@ def scroll_image(bg,bg2,bg3):
     if position_state == True:
          position -= 5
          position2 -= 5
-         #Sassayako.rect.x -= 5
-         #Yoshiyasu.rect.x -= 5
+
     elif position_state == False:
          position -=0
          position2 -=0
@@ -144,6 +143,7 @@ else:
     a = 1
 
 compteur_case = a
+relais_nb = 0
 
 # pour les ecarts de case sur le 1er relais
 gap = f"0.{player_n-1}"
@@ -208,16 +208,28 @@ while True:
     se.hud_set(green_rgb, purple_rgb, yellow_rgb, blue_rgb, gray_rgb, current_p, screen)
 
     #BLIT PIONS
-    for p in lplayer:
-        with open('python/board.csv') as board:
-            reader = csv.reader(board, delimiter = ';')
-            line_count = p.locate
-            for row in reader:
-                if str(line_count) == row[0]:
-                    p.x = int(row[2])
-                    p.y = int(row[3])
+    if position_state == False:
+        for p in lplayer:
+            with open('python/board.csv') as board:
+                reader = csv.reader(board, delimiter = ';')
+                line_count = p.locate
+                for row in reader:
+                    if a == 1:
+                        if str(line_count) == row[0]:
+                            p.x = int(row[2])
+                            p.y = int(row[3])
+                        elif str(float(line_count)) == row[0]:
+                            p.x = int(row[2])
+                            p.y = int(row[3])
+                    elif a == 2:
+                        if str(line_count) == row[0]:
+                            p.x = int(row[4])
+                            p.y = int(row[5])
+                        elif str(float(line_count)) == row[0]:
+                            p.x = int(row[4])
+                            p.y = int(row[5])
 
-        screen.blit(pygame.image.load(f"python/images/player_{p.color}.png"), (p.x, p.y))
+            screen.blit(pygame.image.load(f"python/images/player_{p.color}.png"), (p.x, p.y))
         
 
     # PYGAME EVENTS DETECTION
@@ -248,12 +260,28 @@ while True:
                             for p in lplayer:
                                 if p.locate == relais[a]:
                                     nbrelais += 1
+
+                                if current_p.locate == relais[a]:
+                                    p.locate -= relais_nb
+                                    print(p.color, p.locate)
+                                    relais_nb += 0.1
+
+                                    small_locate = 100
+                                    for p in lplayer:
+                                        if p.locate < small_locate:
+                                            small_locate = p.locate
+                                            current_p = p
                             
                             if nbrelais == player_n:
+                                time.sleep(1.0)
                                 a += 1
+                                relais_nb = 0
+                                pygame.display.update()
+
                                 # Check if the game is finished
                                 if a == 5:
                                     break
+
                                 print(f"Vous passez maintenant à la {a}e partie du plateau.")
                                 l_meal.extend(se.mealdraw)
                                 print(l_meal)
@@ -261,9 +289,11 @@ while True:
                                 print(se.mealdraw)
                                 nbrelais = 0
 
+                                position_state = True
+
                             print(f'Le joueur {current_p.color} joue')
 
-    pygame.time.Clock().tick(120)
+    pygame.time.Clock().tick(144)
 
     crosshair_group.draw(screen)
     crosshair_group.update()
