@@ -111,3 +111,66 @@ def get_stat():
     cnx.commit()
     cursor.close()
     cnx.close()
+
+def update_winstat(pseudo):
+
+    cnx = connect(
+        host="127.0.0.1",
+        user="root",
+        password="root",
+        database="tokaido"
+        )
+    
+    print(cnx)
+    cursor = cnx.cursor()
+
+    # requête qui AFFICHE tout identifiant
+    sql = ("SELECT jou_id, sta_win " "FROM Joueur " "INNER JOIN Statistiques " "ON jou_id = sta_id " "WHERE jou_pseudo = %s;")
+    data = (f"{pseudo}",)
+
+    # on exécute la requête
+    cursor.execute(sql, data)
+    result3 = cursor.fetchall()
+    print(result3)
+    id_v = result3[0][0]
+    victory = result3[0][1]+1
+
+    # requête qui AFFICHE tout identifiant
+    sql = ("UPDATE Statistiques " "SET sta_win = %s " "WHERE sta_id = %s;")
+    data = (f"{victory}", f"{id_v}")
+
+    # on exécute la requête
+    cursor.execute(sql, data)
+    result4 = cursor.fetchall()
+    print(result4)
+
+
+    cnx.commit()
+    cursor.close()
+    cnx.close()
+
+def get_lplayer():
+
+    cnx = connect(
+        host="127.0.0.1",
+        user="root",
+        password="root",
+        database="tokaido"
+        )
+    
+    print(cnx)
+    cursor = cnx.cursor()
+
+    # requête qui AFFICHE tout identifiant
+    sql = ("SELECT jou_pseudo, jou_id " "FROM Joueur;")
+
+    # on exécute la requête
+    cursor.execute(sql)
+    result5 = cursor.fetchall()
+    print(result5)
+
+    cnx.commit()
+    cursor.close()
+    cnx.close()
+
+    return result5

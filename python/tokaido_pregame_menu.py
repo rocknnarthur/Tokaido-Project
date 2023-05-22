@@ -2,6 +2,7 @@ import pygame, os, sys
 import pygame_menu
 from classes import Crosshair
 from fichier import Fichier
+from sqlconnectlogin import get_lplayer
 
 pygame.init()
 pygame.display.set_caption("Game settings")
@@ -173,7 +174,7 @@ def menu_player(lp_color):
     global gender
     global change
 
-    l_pseudo = [('Art333', 1), ('Vitarse', 2), ('Frimoosse', 3), ('Zeldomar', 4), ('Lauyana', 5)]
+    l_pseudo = get_lplayer()
     lp_pseudo = []
     lplayer = []
     for n in range(0, n_player):
@@ -183,7 +184,8 @@ def menu_player(lp_color):
         change = False
 
         menu4.add.selector(f'Pseudo joueur {lp_color[n]}: ', l_pseudo, onchange=set_pseudo)
-        menu4.add.selector('Genre: ', [('Human', 0), ('Computer', 1)], onchange=set_gender)
+        menu4.add.selector('Genre: ', [('Human', 0)])
+        #menu4.add.selector('Genre: ', [('Human', 0), ('Computer', 1)], onchange=set_gender)
         menu4.add.text_input('Press X key to valid', maxchar=1)
         menu4.add.button('Quit', back_mainmenu)
 
@@ -290,7 +292,8 @@ menu4 = pygame_menu.Menu(
 
 #user_name = menu.add.text_input('Name: ', default='John Doe', maxchar=10)
 menu.add.text_input('Utilisez les flèches et le bouton entrer de préférence', maxchar=1)
-menu.add.selector('Mode: ', [('Noob Travel', 0), ('Normal Travel', 1), ('Back Travel', 2), ('Gastronomy Travel', 3), ('Setups Travel', 4)], onchange=set_difficulty)
+menu.add.selector('Mode: ', [('Noob Travel', 0), ('Gastronomy Travel', 3), ('Setups Travel', 4)], onchange=set_difficulty)
+#menu.add.selector('Mode: ', [('Noob Travel', 0), ('Normal Travel', 1), ('Back Travel', 2), ('Gastronomy Travel', 3), ('Setups Travel', 4)], onchange=set_difficulty)
 menu.add.button('Next', menu_nbr_player)
 menu.add.button('Quit', back_mainmenu)
 

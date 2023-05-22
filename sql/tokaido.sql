@@ -39,7 +39,17 @@ ENGINE=INNODB;
 --
 
 INSERT INTO Joueur
-VALUES	(1, 'CHEVREL', 'Arthur', 'Art333', '2023-03-15', 'rocknnarthur', 'raclette123!');
+VALUES	(1, 'CHEVREL', 'Arthur', 'Art333', '2023-03-15', 'rocknnarthur', 'raclette123!'),
+(2, 'AMISI', 'Arthur', 'Vitarse', '2023-05-10', 'vitarse', 'azerty123*'),
+(3, 'BENARD', 'Sam', 'Frimoosse', '2023-05-11', 'frimoosse', 'ratio123*'),
+(4, 'LAGORCE', 'Simon', 'Zeldomar', '2023-05-13', 'zeldomar', 'flop123*'),
+(5, 'CADORET', 'Clément', 'Rozdor', '2023-05-15', 'rozdor', '1234'),
+(6, 'DUGUE', 'Alissa', 'Lauyana', '2023-05-16', 'lauyana', 'fromage123*');
 
 INSERT INTO Statistiques
-VALUES	(1, 0, 0);
+VALUES	(1, 0, 0),
+(2, 0, 0),
+(3, 0, 0),
+(4, 0, 0),
+(5, 0, 0),
+(6, 0, 0);

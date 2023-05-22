@@ -4,18 +4,19 @@ from classes import Crosshair
 from sqlconnectlogin import get_stat
 from fichier import Fichier
 
+# Init
 pygame.init()
-
 SCREEN = pygame.display.set_mode((1280, 720))
 pygame.display.set_caption("Tokaido Menu")
 pygame.display.set_icon(pygame.image.load("python/images/sakura.png"))
 pygame.mouse.set_visible(False)
 
+# Backgrounds
 menu_bg = pygame.image.load("python/images/menu.jpg")
 options_bg = pygame.image.load("python/images/settings.jpg")
 account_bg = pygame.image.load("python/images/account.jpg")
 
-# crosshair
+# Crosshair
 crosshair = Crosshair("python/images/sakura_flower.png")
 crosshair_group = pygame.sprite.Group()
 crosshair_group.add(crosshair)
@@ -25,11 +26,13 @@ def get_font(size): # Returns the BTTTRIAL font in the specify size
 def get_font2(size): # Returns the Calibri font in the specify size
     return pygame.font.Font("python/calibri.ttf", size)
 
+# Lance le menu pregame
 def play():
     pygame.quit()
     os.system('cmd /k "game_set.bat"')
     sys.exit()
-    
+
+# Menu OPTIONS
 def options():
     pygame.display.set_caption("Options")
 
@@ -38,7 +41,7 @@ def options():
 
         SCREEN.blit(options_bg, (-320, -70))
 
-        OPTIONS_TEXT = get_font(45).render("This is the OPTIONS screen", True, "Black")
+        OPTIONS_TEXT = get_font(45).render("FONCTIONNALITES A VENIR...", True, "Black")
         OPTIONS_RECT = OPTIONS_TEXT.get_rect(center=(640, 260))
         SCREEN.blit(OPTIONS_TEXT, OPTIONS_RECT)
 
@@ -60,6 +63,7 @@ def options():
         crosshair_group.update()
         pygame.display.update()
 
+# Menu COMPTE avec stats actualisées à chaque ouverture de ce menu
 def account():
     pygame.display.set_caption("Compte Tokaido")
     get_stat()
@@ -102,6 +106,7 @@ def account():
         crosshair_group.update()
         pygame.display.update()
 
+# Menu PRINCIPAL
 def main_menu():
     pygame.display.set_caption("Tokaido Menu")
 

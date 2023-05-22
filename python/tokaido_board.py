@@ -1,11 +1,13 @@
-import pygame, sys
+import pygame, sys, os
 import station_effect as se
 import random
 import csv
 import pickle
 import time
+from button import Button
 from classes import Player, Case, Crosshair
 from fichier import Fichier
+from sqlconnectlogin import update_winstat
 
 # Init
 pygame.init()
@@ -19,7 +21,7 @@ crosshair = Crosshair("python/images/sakura_flower.png")
 crosshair_group = pygame.sprite.Group()
 crosshair_group.add(crosshair)
 
-#rotation image
+# Fonction rotation image
 def rotation_image(image,angle):
     """il s'agit d'une fonction qui permet de faire une rotation d'image dans le cas
     où elle serait à l'envers par exemple"""
@@ -28,7 +30,7 @@ def rotation_image(image,angle):
     rot_sprite.get_rect().center = location
     return rot_sprite
 
-#defilement plateau
+# Defilement plateau
 position = 0
 position2 = 0
 position_state = False
@@ -42,8 +44,8 @@ def scroll_image(bg,bg2,bg3):
     screen.blit(bg2,(bg.get_width()+ position,0))
     screen.blit(bg3,(bg.get_width() + bg2.get_width()+ position2,0))
     if position_state == True:
-         position -= 5
-         position2 -= 5
+         position -= 10
+         position2 -= 10
 
     elif position_state == False:
          position -=0
@@ -60,6 +62,8 @@ background3 = pygame.transform.scale(background3,(720,1080))
 background = rotation_image(background,90)
 background2 = rotation_image(background2,90)
 background3 = rotation_image(background3,90)
+
+end_bg = pygame.image.load("python/images/end.jpg")
 
 # Couleurs Voyageurs
 purple_rgb = (203,49,222)
@@ -115,11 +119,11 @@ for p in lplayer:
     p.afficher()
 
 # Some setups
-
+    # import stations hitboxes x,y pos
 fichier_stations = open("python/Stations.py","rb")
 Station_dico = pickle.load(fichier_stations)
 fichier_stations.close()
-
+    # put them in a list
 liste_case = []
 for k in range(55):
      case_posx = Station_dico[str(k)][-2]
@@ -127,15 +131,18 @@ for k in range(55):
      case = Case((case_posx,case_posy),k)
      liste_case.append(case)
 
+    # pos x,y of left part of the board for the scroll board function
 pos_list = [-900, -895]
 pos_listInter = [-1580, -1580]
 pos_list2 = [-2140, -2140]
 
+    # double slot stations list
 if player_n >= 4:
     ldb_case = [2, 6, 7, 8, 10, 12, 18, 19, 20, 21, 23, 25, 31, 33, 35, 37, 38, 41, 44, 46, 48, 49, 52, 53]
 else:
     ldb_case = []
 
+    # relais stations list w/ a specific index
 relais = [1,15,28,42,55]
 if gamemode == 2:
     a = 3
@@ -151,14 +158,45 @@ gap = float(gap)
 for p in lplayer:
     print(p.locate)
     p.locate -= gap
+    p.locate = round(p.locate, 1)
     gap -= 0.1
 
 l_meal = ["Misoshiru", "Misoshiru", "Misoshiru", "Nigirimeshi", "Nigirimeshi", "Nigirimeshi", "Dango", "Dango", "Dango", "Yakitori", "Yakitori", "Soba", "Soba", "Sushi", "Sushi", "Tofu", "Tofu", "Tempura", "Tempura", "Unagi", "Donburi", "Udon", "Fugu", "Tai Meshi", "Sashimi"]
 random.shuffle(l_meal)
-l_souvenir = ["Koma", "Gofu", "Washi", "Hashi", "Uchiwa", "Yunomi", "Ocha", "Sake", "Konpeito", "Kanaboko", "Daifuku", "Manju", "Netsuke", "Shamisen", "Jubako", "Sumie", "Shikki", "Ukiyoe", "Kanzashi", "Sandogasa", "Geta", "Haori", "Yukata", "Furoshiki"]
+l_souvenir = ["Koma", "Gofu", "Washi", "Hashi", "Uchiwa", "Yunomi", "Ocha", "Sake", "Konpeito", "Kamaboko", "Daifuku", "Manju", "Netsuke", "Shamisen", "Jubako", "Sumie", "Shikki", "Ukiyoe", "Kan Zashi", "Sandogasa", "Geta", "Haori", "Yukata", "Furoshiki"]
 random.shuffle(l_souvenir)
 l_meet = ["miko", "miko", "annaibito_mer", "annaibito_mer", "annaibito_mer", "annaibito_mont", "annaibito_mont", "annaibito_riz", "kuge", "kuge", "shokunin", "shokunin", "samurai", "samurai"]
 random.shuffle(l_meet)
+
+# Préparatifs gamemode
+# 2p, 1er = -1 pièce et 2e = +1 pièce
+# 3p, 1er = -1 pièce, 2e = 0 pièce, 3e = +1 pièces
+# 4p, 1er = -1 pièce, 2e = 0 pièce, 3e = +1 pièces, 4e = +2 pièces
+# 5p, 1er = -1 pièce, 2e = -1 pièce, 3e = +0 pièces, 4e = +1 pièces, 5e = +2 pièces
+if gamemode == 4:
+    if player_n == 5:
+        lplayer[0].purse -= 1
+        lplayer[1].purse -= 1
+        #lplayer[2].purse ne change pas
+        lplayer[3].purse += 1
+        lplayer[4].purse += 2
+    
+    elif player_n == 4:
+        lplayer[0].purse -= 1
+        #lplayer[1].purse ne change pas
+        lplayer[2].purse += 1
+        lplayer[3].purse += 2
+
+    elif player_n == 3:
+        lplayer[0].purse -= 1
+        #lplayer[1].purse ne change pas
+        lplayer[2].purse += 1
+
+    elif player_n == 2:
+        lplayer[0].purse -= 1
+        lplayer[1].purse += 1
+    for p in lplayer:
+        print(p.purse)
 
 # Fixing first player turn
 current_p = lplayer[0]
@@ -265,12 +303,12 @@ while loop:
                     if case.rect.collidepoint(mouse_pos):
                         #MOVE STATION
                         move = int(case.nom)+1
-                        if se.move_set(move, current_p, relais, a, lplayer, player_n, ldb_case, l_meet, l_souvenir, l_meal, gamemode):
+                        if se.move_set(move, current_p, relais, a, lplayer, player_n, ldb_case, l_meet, l_souvenir, l_meal, gamemode, screen):
                             
                             # Checking if all players are arrived at next relais
                             nbrelais = 0
                             for p in lplayer:
-                                if p.locate == relais[a]:
+                                if round(p.locate) == relais[a]:
                                     nbrelais += 1
 
                             if current_p.locate == relais[a]:
@@ -286,7 +324,6 @@ while loop:
                                     current_p = p
                             
                             if nbrelais == player_n:
-                                time.sleep(1.0)
                                 a += 1
 
                                 # Check if the game is finished
@@ -341,7 +378,7 @@ for np in range(len(lplayer)):
     
 
 print(f"""
-Félicitations !
+
 Le joueur {lp_result[0].color} {lp_result[0].pseudo} remporte cette partie avec {lp_result[0].pts}pts !
 """)
 
@@ -349,4 +386,49 @@ print("Classement des perdants:")
 for other in range(1, len(lp_result)):
     print(f"En {other+1}e, le joueur {lp_result[other].color} {lp_result[other].pseudo} avec {lp_result[other].pts}pts")
 
-print("\nstopping script")
+
+
+pygame.display.set_caption("Classement fin de partie")
+screen = pygame.display.set_mode((1280,720))
+
+update_winstat(lp_result[0].pseudo)
+
+while True:
+    mouse_pos = pygame.mouse.get_pos()
+
+    screen.blit(end_bg, (0,0))
+
+    congrat_text = pygame.font.Font(None, 50).render("Félicitations !", True, "White")
+    firstp_text = pygame.font.Font(None, 50).render(f"Le joueur {lp_result[0].color} {lp_result[0].pseudo} remporte cette partie avec {lp_result[0].pts}pts !", True, lp_result[0].color)
+    congrat_rect = congrat_text.get_rect(center=(640, 100))
+    firstp_rect = firstp_text.get_rect(center=(640, 200))
+    screen.blit(congrat_text, congrat_rect)
+    screen.blit(firstp_text, firstp_rect)
+
+    b = 0
+    for other in range(1, len(lp_result)):
+        others_text = pygame.font.Font(None, 50).render(f"En {other+1}e, le joueur {lp_result[other].color} {lp_result[other].pseudo} avec {lp_result[other].pts}pts", True, lp_result[other].color)
+        others_rect = others_text.get_rect(center=(640, 300+b))
+        screen.blit(others_text, others_rect)
+        b += 50
+
+    back_button = Button(image=None, pos=(640, 350+b), 
+                        text_input="BACK TO MAIN MENU", font=pygame.font.Font(None, 100), base_color="White", hovering_color="Pink")
+
+    back_button.changeColor(mouse_pos)
+    back_button.update(screen)
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if back_button.checkForInput(mouse_pos):
+                pygame.quit()
+                os.system('cmd /k "menu.bat"')
+
+    pygame.time.Clock().tick(144)
+
+    crosshair_group.draw(screen)
+    crosshair_group.update()
+    pygame.display.update()

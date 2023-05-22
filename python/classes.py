@@ -1,5 +1,5 @@
 import pygame
-import sys
+
 
 class Player:
     def __init__(self, pseudo, couleur, station, argent, personnage, genre):
@@ -30,7 +30,7 @@ class Case:
         self.nom = str(number)
         self.position = pos
         self.surface = pygame.Surface((65,65),pygame.SRCALPHA)
-        self.surface.fill((29,35,189,128))
+        self.surface.fill((29,35,189,0))
         self.rect = self.surface.get_rect(topleft= self.position)
 
 class Crosshair(pygame.sprite.Sprite):
@@ -42,3 +42,21 @@ class Crosshair(pygame.sprite.Sprite):
         
     def update(self):
         self.rect.center = pygame.mouse.get_pos()
+
+class Repas:
+    def __init__(self, picture_path, position):
+        self.pos = position
+        self.dim = (120,200)
+        self.image = pygame.image.load(picture_path)
+        self.image = pygame.transform.scale(self.image, self.dim)
+        self.surface = pygame.Surface(self.dim, pygame.SRCALPHA)
+        self.surface.fill((29,35,189,0))
+        self.rect = self.surface.get_rect(topleft=self.pos)
+
+class Amen:
+    def __init__(self, picture_path, position):
+        self.pos = position
+        self.image = pygame.image.load(picture_path)
+        self.surface = pygame.Surface((150,150), pygame.SRCALPHA)
+        self.surface.fill((29,35,189,0))
+        self.rect = self.surface.get_rect(topleft=self.pos)
