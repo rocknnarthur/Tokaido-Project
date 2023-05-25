@@ -53,6 +53,16 @@ class Repas:
         self.surface.fill((29,35,189,0))
         self.rect = self.surface.get_rect(topleft=self.pos)
 
+class Tuile:
+    def __init__(self, picture_path, position):
+        self.pos = position
+        self.dim = (240,400)
+        self.image = pygame.image.load(picture_path)
+        self.image = pygame.transform.scale(self.image, self.dim)
+        self.surface = pygame.Surface(self.dim, pygame.SRCALPHA)
+        self.surface.fill((29,35,189,0))
+        self.rect = self.surface.get_rect(topleft=self.pos)
+
 class Amen:
     def __init__(self, picture_path, position):
         self.pos = position

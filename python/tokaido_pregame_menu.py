@@ -292,7 +292,7 @@ menu4 = pygame_menu.Menu(
 
 #user_name = menu.add.text_input('Name: ', default='John Doe', maxchar=10)
 menu.add.text_input('Utilisez les flèches et le bouton entrer de préférence', maxchar=1)
-menu.add.selector('Mode: ', [('Noob Travel', 0), ('Gastronomy Travel', 3), ('Setups Travel', 4)], onchange=set_difficulty)
+menu.add.selector('Mode: ', [('Noob Travel', 0), ('Normal Travel', 1), ('Gastronomy Travel', 3), ('Setups Travel', 4)], onchange=set_difficulty)
 #menu.add.selector('Mode: ', [('Noob Travel', 0), ('Normal Travel', 1), ('Back Travel', 2), ('Gastronomy Travel', 3), ('Setups Travel', 4)], onchange=set_difficulty)
 menu.add.button('Next', menu_nbr_player)
 menu.add.button('Quit', back_mainmenu)

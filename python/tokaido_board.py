@@ -8,6 +8,7 @@ from button import Button
 from classes import Player, Case, Crosshair
 from fichier import Fichier
 from sqlconnectlogin import update_winstat
+from sound import Sound
 
 # Init
 pygame.init()
@@ -20,6 +21,9 @@ screen = pygame.display.set_mode((1080,720))
 crosshair = Crosshair("python/images/sakura_flower.png")
 crosshair_group = pygame.sprite.Group()
 crosshair_group.add(crosshair)
+
+# Music
+music = Sound("python/music/theme1.mp3")
 
 # Fonction rotation image
 def rotation_image(image,angle):
@@ -100,7 +104,7 @@ for p in lp_infos:
         print(tuiledraw)
         tuile_ask = 0
         while not 0 < tuile_ask < 3:
-            tuile_ask = int(input("Quelle tuile voulez-vous choisir ? [entrez position numérique de la tuile] : "))
+            tuile_ask = se.tuile_blit(tuiledraw, screen, p[0])
             if not 0 < tuile_ask < 3:
                 print("Entrez une valeur correcte.")
         startmoney = tuiledraw[tuile_ask-1][1]
@@ -243,6 +247,11 @@ while loop:
         position_state = False
         compteur_case = 4
 
+    #INFOS
+    font = pygame.font.Font(None, 40)
+    infos_text = font.render("Press i", None, (0,0,0))
+    screen.blit(infos_text, (10, 680))
+
     #BLIT HUD
     se.hud_set(green_rgb, purple_rgb, yellow_rgb, blue_rgb, gray_rgb, current_p, screen)
 
@@ -294,6 +303,16 @@ while loop:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_i:
+                music.popup_infos()
+
+            elif event.key == pygame.K_m:
+                music.change_theme()
+
+            elif event.key == pygame.K_p:
+                music.music_on_off()
 
         if event.type == pygame.MOUSEBUTTONDOWN:
             mouse_pos = pygame.mouse.get_pos()

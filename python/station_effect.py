@@ -2,7 +2,7 @@ import random
 import csv
 import pygame
 import time
-from classes import Crosshair, Repas, Amen
+from classes import Crosshair, Repas, Tuile, Amen
 from button import Button
 
 # Crosshair
@@ -364,7 +364,7 @@ def checkstation(player, case, l_meet, l_souvenir, l_meal, player_n, gamemode, s
             player.souvdeck.append(l_souvenir[alea])
             l_souvenir.remove(l_souvenir[alea])
             player.meetdeck.append(meetcard)
-            print("Carte Shokunin, vous gagnez 1 carte rencontre aléatoire !")
+            print("Carte Shokunin, vous gagnez 1 carte souvenir aléatoire !")
             return True
 
         elif meetcard == "samurai":
@@ -377,6 +377,12 @@ def checkstation(player, case, l_meet, l_souvenir, l_meal, player_n, gamemode, s
     if case == "ferme":
         player.purse += 3
         print("Vous gagnez 3 pièces.")
+        gold = pygame.image.load(f"python/images/temple/amen3.png")
+        gold = pygame.transform.scale(gold, (200, 200))
+        screen.fill((255, 255, 255))
+        screen.blit(gold, (440, 250))
+        pygame.display.update()
+        time.sleep(1.0)
         return True
 
     # Source chaude
@@ -627,6 +633,7 @@ def hud_set(green, purple, yellow, blue, gray, player, screen):
     souv_text = font.render(str(len(player.souvdeck)), None, (0,0,0))
     meet_text = font.render(str(len(player.meetdeck)), None, (0,0,0))
     meal_text = font.render(str(len(player.mealdeck)), None, (0,0,0))
+    amen_text = font.render(str(player.amen), None, (0,0,0))
     pts_text = font.render(str(player.pts), None, (0,0,0))
 
     coin_img = pygame.image.load("python/images/coin.png")
@@ -643,8 +650,21 @@ def hud_set(green, purple, yellow, blue, gray, player, screen):
     meet_img = pygame.transform.scale(meet_img, (30,50))
     meal_img = pygame.image.load("python/images/repas/dos_meal.png")
     meal_img = pygame.transform.scale(meal_img, (30,50))
+    amen_img = pygame.image.load("python/images/temple/icon_temple.png")
+    amen_img = pygame.transform.scale(amen_img, (50,50))
     pts_img = pygame.image.load("python/images/baluchon.png")
     pts_img = pygame.transform.scale(pts_img, (40,30))
+
+    if player.perso != None:
+        tuile_img = pygame.image.load(f"python/images/tuiles/{player.perso}.png")
+        tuile_img = pygame.transform.scale(tuile_img, (110,160))
+
+        bindle_img = pygame.image.load(f"python/images/baluchons/bindle_{player.color}.png")
+        bindle_img = pygame.transform.scale(bindle_img, (30,30))
+
+        screen.blit(tuile_img, (0, 75))
+        screen.blit(bindle_img, (6, 83))
+        
 
     screen.blit(hud, rect)
 
@@ -669,11 +689,60 @@ def hud_set(green, purple, yellow, blue, gray, player, screen):
     screen.blit(meal_img, (525,12))
     screen.blit(meal_text, (560,25))
 
+    screen.blit(amen_img, (595,12))
+    screen.blit(amen_text, (650,25))
+
     screen.blit(pts_img, (775,20))
     screen.blit(pts_text, (825,25))
 
     screen.blit(pseudo_text, (875,25))
 
+
+
+#CHOIX PERSO SCREEN
+def tuile_blit(tuiles, screen, player):
+
+    ask = 0
+    tuile_loop = True
+    while tuile_loop:
+        events = pygame.event.get()
+        mouse_pos = pygame.mouse.get_pos()
+        screen.fill((255,255,255))
+
+        font = pygame.font.Font(None, 80)
+        info_text = font.render("Choisir une Tuile", None, (0,0,0))
+        info_rect = info_text.get_rect(center=(540, 100))
+        screen.blit(info_text, info_rect)
+
+        pseudo_text = font.render(str(player), None, (0,0,0))
+        pseudo_rect = pseudo_text.get_rect(center=(540, 660))
+        screen.blit(pseudo_text, pseudo_rect)
+
+        c = 0
+        for tuile in tuiles:
+            m = Tuile(f"python/images/tuiles/{tuile[0]}.png", (260+c, 180))
+            screen.blit(m.image, m.pos)
+            screen.blit(m.surface, m.rect)
+            for event in events:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if m.rect.collidepoint(mouse_pos):
+                        print(f"CARTE TROUVEE, numero {tuiles.index(tuile)+1}")
+                        ask = tuiles.index(tuile)+1
+                        tuile_loop = False
+
+            c += 300
+
+        for event in events:
+            if event.type == pygame.QUIT:
+                pygame.quit()
+
+        pygame.time.Clock().tick(144)
+
+        crosshair_group.draw(screen)
+        crosshair_group.update()
+        pygame.display.update()
+
+    return ask
 
 # RELAIS SCREEN
 def meal_blit(meals, screen):
@@ -698,7 +767,19 @@ def meal_blit(meals, screen):
 
 
         c = 0
-        if len(meals) == 2:
+        if len(meals) == 1:
+            for meal in meals:
+                m = Repas(f"python/images/repas/{meal.lower()}.png", (500, 260))
+                screen.blit(m.image, m.pos)
+                screen.blit(m.surface, m.rect)
+                for event in events:
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        if m.rect.collidepoint(mouse_pos):
+                            print(f"CARTE TROUVEE, numero {meals.index(meal)+1}")
+                            ask = meals.index(meal)+1
+                            meal_loop = False
+
+        elif len(meals) == 2:
             for meal in meals:
                 m = Repas(f"python/images/repas/{meal.lower()}.png", (420+c, 260))
                 screen.blit(m.image, m.pos)

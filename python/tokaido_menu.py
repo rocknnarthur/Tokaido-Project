@@ -3,6 +3,7 @@ from button import Button
 from classes import Crosshair
 from sqlconnectlogin import get_stat
 from fichier import Fichier
+from sound import Sound
 
 # Init
 pygame.init()
@@ -20,6 +21,10 @@ account_bg = pygame.image.load("python/images/account.jpg")
 crosshair = Crosshair("python/images/sakura_flower.png")
 crosshair_group = pygame.sprite.Group()
 crosshair_group.add(crosshair)
+
+# Music
+music = Sound("python/music/menutheme1.mp3")
+volumeimg = pygame.image.load("python/images/speaker.png")
 
 def get_font(size): # Returns the BTTTRIAL font in the specify size
     return pygame.font.Font("python/BTTTRIAL.otf", size)
@@ -41,15 +46,23 @@ def options():
 
         SCREEN.blit(options_bg, (-320, -70))
 
-        OPTIONS_TEXT = get_font(45).render("FONCTIONNALITES A VENIR...", True, "Black")
-        OPTIONS_RECT = OPTIONS_TEXT.get_rect(center=(640, 260))
-        SCREEN.blit(OPTIONS_TEXT, OPTIONS_RECT)
+        SCREEN.blit(volumeimg, (580, 130))
 
         OPTIONS_BACK = Button(image=None, pos=(640, 460), 
                             text_input="BACK", font=get_font(75), base_color="Black", hovering_color="Gray")
+        
+        if not music.state:
+            OPTIONS_MUSIC = Button(image=None, pos=(640, 320),
+                            text_input="TURN ON", font=get_font(75), base_color="Black", hovering_color="Green")
+        else:
+            OPTIONS_MUSIC = Button(image=None, pos=(640, 320),
+                            text_input="TURN OFF", font=get_font(75), base_color="Black", hovering_color="DarkRed")
 
         OPTIONS_BACK.changeColor(OPTIONS_MOUSE_POS)
         OPTIONS_BACK.update(SCREEN)
+
+        OPTIONS_MUSIC.changeColor(OPTIONS_MOUSE_POS)
+        OPTIONS_MUSIC.update(SCREEN)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -58,6 +71,9 @@ def options():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if OPTIONS_BACK.checkForInput(OPTIONS_MOUSE_POS):
                     main_menu()
+                elif OPTIONS_MUSIC.checkForInput(OPTIONS_MOUSE_POS):
+                    music.music_on_off()
+
 
         crosshair_group.draw(SCREEN)
         crosshair_group.update()
