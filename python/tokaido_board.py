@@ -78,7 +78,7 @@ yellow_rgb = (240,195,0)
 
 # Get infos from pregame settings
 lp_infos = Fichier("lplayer.dat").lire() # PSEUDO, COLOR, GENDER
-gamemode = Fichier("gamemode.dat").lire() #MODE
+gamemode = Fichier("gamemode.dat").lire() # MODE
 player_n = len(lp_infos)
 
 # Player class instance
@@ -105,8 +105,7 @@ for p in lp_infos:
         tuile_ask = 0
         while not 0 < tuile_ask < 3:
             tuile_ask = se.tuile_blit(tuiledraw, screen, p[0])
-            if not 0 < tuile_ask < 3:
-                print("Entrez une valeur correcte.")
+
         startmoney = tuiledraw[tuile_ask-1][1]
         tuile = tuiledraw[tuile_ask-1][0]
         print(tuiledraw[tuile_ask-1])
@@ -165,6 +164,7 @@ for p in lplayer:
     p.locate = round(p.locate, 1)
     gap -= 0.1
 
+# listes cartes à piocher
 l_meal = ["Misoshiru", "Misoshiru", "Misoshiru", "Nigirimeshi", "Nigirimeshi", "Nigirimeshi", "Dango", "Dango", "Dango", "Yakitori", "Yakitori", "Soba", "Soba", "Sushi", "Sushi", "Tofu", "Tofu", "Tempura", "Tempura", "Unagi", "Donburi", "Udon", "Fugu", "Tai Meshi", "Sashimi"]
 random.shuffle(l_meal)
 l_souvenir = ["Koma", "Gofu", "Washi", "Hashi", "Uchiwa", "Yunomi", "Ocha", "Sake", "Konpeito", "Kamaboko", "Daifuku", "Manju", "Netsuke", "Shamisen", "Jubako", "Sumie", "Shikki", "Ukiyoe", "Kan Zashi", "Sandogasa", "Geta", "Haori", "Yukata", "Furoshiki"]

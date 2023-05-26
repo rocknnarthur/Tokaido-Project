@@ -31,10 +31,13 @@ def panoramacheck(player, case, screen):
             # RIZ CARD SCREEN
             riz_card = pygame.image.load(f"python/images/paysage/riz{player.riz}.png")
             riz_card = pygame.transform.scale(riz_card, (300, 500))
-            screen.fill((255, 255, 255))
-            screen.blit(riz_card, (380, 110))
+            riz_img = pygame.image.load("python/images/riziere.jpg")
+            riz_img = pygame.transform.scale(riz_img, (1080, 720))
+
+            screen.blit(riz_img, (0, 0))
+            screen.blit(riz_card, (680,50))
             pygame.display.update()
-            time.sleep(1.0)
+            time.sleep(2.0)
 
             # Si panorama rizière complété
             if player.riz == 3:
@@ -60,10 +63,13 @@ def panoramacheck(player, case, screen):
             # MONT CARD SCREEN
             mont_card = pygame.image.load(f"python/images/paysage/mont{player.mont}.png")
             mont_card = pygame.transform.scale(mont_card, (300, 500))
-            screen.fill((255, 255, 255))
-            screen.blit(mont_card, (380, 110))
+            mont_img = pygame.image.load("python/images/paysage/montagne.jpg")
+            mont_img = pygame.transform.scale(mont_img, (1080, 720))
+
+            screen.blit(mont_img, (0, 0))
+            screen.blit(mont_card, (680, 50))
             pygame.display.update()
-            time.sleep(1.0)
+            time.sleep(2.0)
 
             # Si panorama montagne complété
             if player.mont == 4:
@@ -89,10 +95,13 @@ def panoramacheck(player, case, screen):
             # MER CARD SCREEN
             mer_card = pygame.image.load(f"python/images/paysage/mer{player.mer}.png")
             mer_card = pygame.transform.scale(mer_card, (300, 500))
-            screen.fill((255, 255, 255))
-            screen.blit(mer_card, (380, 110))
+            mer_img = pygame.image.load("python/images/paysage/mer.jpg")
+            mer_img = pygame.transform.scale(mer_img, (1080, 720))
+
+            screen.blit(mer_img, (0, 0))
+            screen.blit(mer_card, (680, 50))
             pygame.display.update()
-            time.sleep(1.0)
+            time.sleep(2.0)
 
             # Si panorama mer complété
             if player.mer == 5:
@@ -380,9 +389,15 @@ def checkstation(player, case, l_meet, l_souvenir, l_meal, player_n, gamemode, s
         gold = pygame.image.load(f"python/images/temple/amen3.png")
         gold = pygame.transform.scale(gold, (200, 200))
         screen.fill((255, 255, 255))
+
+        font = pygame.font.Font(None, 160)
+        info_text = font.render("+", None, (0,0,0))
+        info_rect = info_text.get_rect(center=(400, 350))
+        screen.blit(info_text, info_rect)
+
         screen.blit(gold, (440, 250))
         pygame.display.update()
-        time.sleep(1.0)
+        time.sleep(1.5)
         return True
 
     # Source chaude
@@ -391,12 +406,16 @@ def checkstation(player, case, l_meet, l_souvenir, l_meal, player_n, gamemode, s
         sccard = random.randint(2,3)
         player.pts += sccard
         print(f"Vous piochez une carte source chaude valant {sccard} points. +{sccard}pts !")
+
+        sc_img = pygame.image.load(f"python/images/source/source_chaude.jpg")
+        sc_img = pygame.transform.scale(sc_img, (1080, 720))
         sc_card = pygame.image.load(f"python/images/source/sc{sccard}.png")
         sc_card = pygame.transform.scale(sc_card, (300, 500))
-        screen.fill((255, 255, 255))
-        screen.blit(sc_card, (380, 110))
+
+        screen.blit(sc_img, (0, 0))
+        screen.blit(sc_card, (680, 50))
         pygame.display.update()
-        time.sleep(1.0)
+        time.sleep(2.0)
         return True
 
     # Rizière
@@ -606,7 +625,29 @@ def move_set(move, current_p, relais, a, lplayer, player_n, ldb_case, l_meet, l_
 
 
 #HUD FONCTION
+coin_img = pygame.image.load("python/images/coin.png")
+coin_img = pygame.transform.scale(coin_img, (50,50))
+riz_img = pygame.image.load("python/images/paysage/dos_riz.png")
+riz_img = pygame.transform.scale(riz_img, (30,50))
+mont_img = pygame.image.load("python/images/paysage/dos_mont.png")
+mont_img = pygame.transform.scale(mont_img, (30,50))
+mer_img = pygame.image.load("python/images/paysage/dos_mer.png")
+mer_img = pygame.transform.scale(mer_img, (30,50))
+souv_img = pygame.image.load("python/images/dos_souv.jpeg")
+souv_img = pygame.transform.scale(souv_img, (30,50))
+meet_img = pygame.image.load("python/images/rencontre/dos_meet.png")
+meet_img = pygame.transform.scale(meet_img, (30,50))
+meal_img = pygame.image.load("python/images/repas/dos_meal.png")
+meal_img = pygame.transform.scale(meal_img, (30,50))
+amen_img = pygame.image.load("python/images/temple/icon_temple.png")
+amen_img = pygame.transform.scale(amen_img, (50,50))
+pts_img = pygame.image.load("python/images/baluchon.png")
+pts_img = pygame.transform.scale(pts_img, (40,30))
+
 def hud_set(green, purple, yellow, blue, gray, player, screen):
+
+    global coin_img, riz_img, mont_img, mer_img, souv_img, meet_img, meal_img, amen_img, pts_img
+
     hud_color = None
 
     if player.color == "green":
@@ -636,26 +677,8 @@ def hud_set(green, purple, yellow, blue, gray, player, screen):
     amen_text = font.render(str(player.amen), None, (0,0,0))
     pts_text = font.render(str(player.pts), None, (0,0,0))
 
-    coin_img = pygame.image.load("python/images/coin.png")
-    coin_img = pygame.transform.scale(coin_img, (50,50))
-    riz_img = pygame.image.load("python/images/paysage/dos_riz.png")
-    riz_img = pygame.transform.scale(riz_img, (30,50))
-    mont_img = pygame.image.load("python/images/paysage/dos_mont.png")
-    mont_img = pygame.transform.scale(mont_img, (30,50))
-    mer_img = pygame.image.load("python/images/paysage/dos_mer.png")
-    mer_img = pygame.transform.scale(mer_img, (30,50))
-    souv_img = pygame.image.load("python/images/dos_souv.jpeg")
-    souv_img = pygame.transform.scale(souv_img, (30,50))
-    meet_img = pygame.image.load("python/images/rencontre/dos_meet.png")
-    meet_img = pygame.transform.scale(meet_img, (30,50))
-    meal_img = pygame.image.load("python/images/repas/dos_meal.png")
-    meal_img = pygame.transform.scale(meal_img, (30,50))
-    amen_img = pygame.image.load("python/images/temple/icon_temple.png")
-    amen_img = pygame.transform.scale(amen_img, (50,50))
-    pts_img = pygame.image.load("python/images/baluchon.png")
-    pts_img = pygame.transform.scale(pts_img, (40,30))
 
-    if player.perso != None:
+    if player.perso != "Aucun perso":
         tuile_img = pygame.image.load(f"python/images/tuiles/{player.perso}.png")
         tuile_img = pygame.transform.scale(tuile_img, (110,160))
 
@@ -703,64 +726,65 @@ def hud_set(green, purple, yellow, blue, gray, player, screen):
 def tuile_blit(tuiles, screen, player):
 
     ask = 0
-    tuile_loop = True
-    while tuile_loop:
-        events = pygame.event.get()
-        mouse_pos = pygame.mouse.get_pos()
-        screen.fill((255,255,255))
 
-        font = pygame.font.Font(None, 80)
-        info_text = font.render("Choisir une Tuile", None, (0,0,0))
-        info_rect = info_text.get_rect(center=(540, 100))
-        screen.blit(info_text, info_rect)
+    events = pygame.event.get()
+    mouse_pos = pygame.mouse.get_pos()
+    screen.fill((255,255,255))
 
-        pseudo_text = font.render(str(player), None, (0,0,0))
-        pseudo_rect = pseudo_text.get_rect(center=(540, 660))
-        screen.blit(pseudo_text, pseudo_rect)
+    font = pygame.font.Font(None, 80)
+    info_text = font.render("Choisir une Tuile", None, (0,0,0))
+    info_rect = info_text.get_rect(center=(540, 100))
+    screen.blit(info_text, info_rect)
 
-        c = 0
-        for tuile in tuiles:
-            m = Tuile(f"python/images/tuiles/{tuile[0]}.png", (260+c, 180))
-            screen.blit(m.image, m.pos)
-            screen.blit(m.surface, m.rect)
-            for event in events:
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    if m.rect.collidepoint(mouse_pos):
-                        print(f"CARTE TROUVEE, numero {tuiles.index(tuile)+1}")
-                        ask = tuiles.index(tuile)+1
-                        tuile_loop = False
+    pseudo_text = font.render(str(player), None, (0,0,0))
+    pseudo_rect = pseudo_text.get_rect(center=(540, 660))
+    screen.blit(pseudo_text, pseudo_rect)
 
-            c += 300
-
+    c = 0
+    for tuile in tuiles:
+        m = Tuile(f"python/images/tuiles/{tuile[0]}.png", (260+c, 180))
+        screen.blit(m.image, m.pos)
+        screen.blit(m.surface, m.rect)
         for event in events:
-            if event.type == pygame.QUIT:
-                pygame.quit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if m.rect.collidepoint(mouse_pos):
+                    print(f"CARTE TROUVEE, numero {tuiles.index(tuile)+1}")
+                    ask = tuiles.index(tuile)+1
 
-        pygame.time.Clock().tick(144)
 
-        crosshair_group.draw(screen)
-        crosshair_group.update()
-        pygame.display.update()
+        c += 300
+
+    for event in events:
+        if event.type == pygame.QUIT:
+            pygame.quit()
+
+    pygame.time.Clock().tick(144)
+
+    crosshair_group.draw(screen)
+    crosshair_group.update()
+    pygame.display.update()
 
     return ask
 
 # RELAIS SCREEN
 def meal_blit(meals, screen):
+    comptoir_img = pygame.image.load("python/images/repas/relais.jpg")
+    comptoir_img = pygame.transform.scale(comptoir_img,(1080,720))
 
     ask = 0
     meal_loop = True
     while meal_loop:
         events = pygame.event.get()
         mouse_pos = pygame.mouse.get_pos()
-        screen.fill((255,255,255))
+        screen.blit(comptoir_img,(0,0))
 
         font = pygame.font.Font(None, 80)
         info_text = font.render("Choisir un Repas", None, (0,0,0))
-        info_rect = info_text.get_rect(center=(540, 100))
+        info_rect = info_text.get_rect(center=(540, 170))
         screen.blit(info_text, info_rect)
 
         non_button = Button(image=None, pos=(540, 600), 
-                        text_input="NE PAS ACHETER", font=pygame.font.Font(None, 100), base_color="Black", hovering_color="Red")
+                        text_input="NE PAS ACHETER", font=pygame.font.Font(None, 100), base_color="Black", hovering_color="DarkRed")
 
         non_button.changeColor(mouse_pos)
         non_button.update(screen)
@@ -769,7 +793,7 @@ def meal_blit(meals, screen):
         c = 0
         if len(meals) == 1:
             for meal in meals:
-                m = Repas(f"python/images/repas/{meal.lower()}.png", (500, 260))
+                m = Repas(f"python/images/repas/{meal.lower()}.png", (500, 340))
                 screen.blit(m.image, m.pos)
                 screen.blit(m.surface, m.rect)
                 for event in events:
@@ -781,7 +805,7 @@ def meal_blit(meals, screen):
 
         elif len(meals) == 2:
             for meal in meals:
-                m = Repas(f"python/images/repas/{meal.lower()}.png", (420+c, 260))
+                m = Repas(f"python/images/repas/{meal.lower()}.png", (420+c, 340))
                 screen.blit(m.image, m.pos)
                 screen.blit(m.surface, m.rect)
                 for event in events:
@@ -794,7 +818,7 @@ def meal_blit(meals, screen):
                 c += 150
         elif len(meals) == 3:
             for meal in meals:
-                m = Repas(f"python/images/repas/{meal.lower()}.png", (330+c, 260))
+                m = Repas(f"python/images/repas/{meal.lower()}.png", (330+c, 340))
                 screen.blit(m.image, m.pos)
                 screen.blit(m.surface, m.rect)
                 for event in events:
@@ -807,7 +831,7 @@ def meal_blit(meals, screen):
 
         elif len(meals) == 4:
             for meal in meals:
-                m = Repas(f"python/images/repas/{meal.lower()}.png", (250+c, 260))
+                m = Repas(f"python/images/repas/{meal.lower()}.png", (250+c, 340))
                 screen.blit(m.image, m.pos)
                 screen.blit(m.surface, m.rect)
                 for event in events:
@@ -820,7 +844,7 @@ def meal_blit(meals, screen):
 
         elif len(meals) == 5:
             for meal in meals:
-                m = Repas(f"python/images/repas/{meal.lower()}.png", (170+c, 260))
+                m = Repas(f"python/images/repas/{meal.lower()}.png", (170+c, 340))
                 screen.blit(m.image, m.pos)
                 screen.blit(m.surface, m.rect)
                 for event in events:
@@ -833,7 +857,7 @@ def meal_blit(meals, screen):
 
         elif len(meals) == 6:
             for meal in meals:
-                m = Repas(f"python/images/repas/{meal.lower()}.png", (100+c, 260))
+                m = Repas(f"python/images/repas/{meal.lower()}.png", (100+c, 340))
                 screen.blit(m.image, m.pos)
                 screen.blit(m.surface, m.rect)
                 for event in events:
@@ -913,13 +937,15 @@ def souv_blit(souv, screen):
 
 
 def amen_blit(screen):
+    temple_img = pygame.image.load("python/images/temple/temple.jpg")
+    temple_img = pygame.transform.scale(temple_img, (1080, 720))
 
     ask = 0
     amen_loop = True
     while amen_loop:
         events = pygame.event.get()
         mouse_pos = pygame.mouse.get_pos()
-        screen.fill((255,255,255))
+        screen.blit(temple_img, (0, 0))
 
         font = pygame.font.Font(None, 80)
         info_text = font.render("Choisir une Offrande", None, (0,0,0))
@@ -936,7 +962,7 @@ def amen_blit(screen):
                     pygame.quit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if am.rect.collidepoint(mouse_pos):
-                        print(f"AMEN = {amen} pieces")
+                        print(f"OFFRANDE = {amen} pieces")
                         ask = amen
                         amen_loop = False
             c += 175
