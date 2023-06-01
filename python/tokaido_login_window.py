@@ -4,6 +4,7 @@ import sqlconnectlogin
 from sqlconnectlogin import connexion, insert_account
 from fichier import Fichier
 
+sg.theme("LIGHT GREEN 10")
 
 def add_account():
     layout2 = [
