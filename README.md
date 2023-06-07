@@ -13,7 +13,7 @@ Par la suite, exécuter la BDD Tokaido située dans le dossier « sql » du proj
 
 POUR LANCER LE JEU : Utilisez le raccourci Tokaido ou lancer le « launch_game.bat ». En cas de soucis, lancer le fichier python « tokaido_login_window.py ». A savoir que les .bat présents sous windows 10 fonctionnent mais doivent être modifié très légèrement sous windows 11 en remplaçant notamment le début de la ligne de code par « python » au lieu de « start » ou « start /min ».
 
-UNE FOIS LA FENETRE DE CONNEXION LANCÉE : vous pouvez créer un compte ou accéder à mon compte personnel (id : rocknnarthur, mdp : raclette123!).
+UNE FOIS LA FENETRE DE CONNEXION LANCÉE : vous pouvez créer un compte.
 
 UNE FOIS CONNECTÉ : un magnifique menu se lancera ! (J’espère que les .bat fonctionnent comme prévu sur votre ordinateur) Devant vous se présentent 4 choix : Jouer, Options, Compte et Quitter. Le menu est, je pense, assez intuitif !
 
