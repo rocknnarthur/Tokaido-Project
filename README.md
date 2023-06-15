@@ -5,7 +5,7 @@ Parmi les fichiers se trouvent les .bat soit des exécutables via invite de comm
 
 VOUS DEVEZ IMPERATIVEMENT POSSEDER LES MODULES ET LOGICIELS SUIVANTS :
 -	VSCODE (avec l’extension MySQL de Weijan Chen pour se connecter à UwAmp) et UwAmp.
--	pygame, pygame-menu, mysql-connector, csv, pickle, time, random, etc…
+-	pygame, pygame-menu, pysimplegui, mysql-connector, csv, pickle, time, random, etc…
 
 PREMIERE CHOSE A FAIRE : connecter sa base de données SQL évidemment !
 Allumez UwAmp, et connecter vous avec l’extension VSCode citée juste au dessus dans la parenthèse, ce plugin est très intuitif ! on renseigne uniquement les champs obligatoires avec un astérisque rouge et le nom de la connexion, puis cliquez sur CONNECT !
